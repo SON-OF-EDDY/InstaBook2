@@ -35,7 +35,7 @@
 </style>
 
 
-<br>
+
 
 {%if logged_on_user_formatted != current_user%}
 <hr/>
@@ -153,7 +153,7 @@
         document.getElementById('profile-pic-1').width = to_log_2;
         console.log('MOB chosen pic');
 
-        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+        //document.getElementById('mobile-checker').innerHTML = 'Mobile';
 
     } else {
 
@@ -173,7 +173,7 @@
         document.getElementById('profile-pic-1').width = to_log_2;
         console.log('PC chosen pic');
 
-        document.getElementById('mobile-checker').innerHTML = 'PC';
+        //document.getElementById('mobile-checker').innerHTML = 'PC';
 
     }
 </script>
@@ -292,7 +292,7 @@
         document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
         //document.getElementById("profile-modal").style["max-width"] = `${to_log_1}px`;
 
-        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+        //document.getElementById('mobile-checker').innerHTML = 'Mobile';
 
     } else {
 
@@ -310,7 +310,7 @@
         document.getElementById('resize'+{{entry.id}}).width = to_log_2;
         document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
 
-        document.getElementById('mobile-checker').innerHTML = 'PC';
+        //document.getElementById('mobile-checker').innerHTML = 'PC';
 
 
     }
@@ -1340,7 +1340,32 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 {%else%}
 
-<h2>This user's profile is set to private. Add them as a friend to view their pics and songs.</h2>
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h2>This user's profile is set to private. Add them as a friend to view their pics and songs.</h2></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
 
 {%endif%}
 

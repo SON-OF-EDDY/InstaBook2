@@ -83,7 +83,7 @@
                             document.getElementById('profile-pic').width = to_log_2;
                             document.getElementById('modal-box').style["max-width"] = `${to_log_1}px`;
 
-                            document.getElementById('mobile-checker').innerHTML = 'Mobile';
+                            //document.getElementById('mobile-checker').innerHTML = 'Mobile';
 
                         } else {
 
@@ -115,7 +115,7 @@
                             }
                             // else they have the standard question mark profile pic...
 
-                            document.getElementById('mobile-checker').innerHTML = 'PC';
+                            //document.getElementById('mobile-checker').innerHTML = 'PC';
 
 
                         }
@@ -229,7 +229,7 @@
         document.getElementById('youtube-video').width = to_log_1;
         document.getElementById('profile-pic').width = to_log_1;
         document.getElementById('modal-box').className = 'modal-dialog modal-sm';
-        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+        //document.getElementById('mobile-checker').innerHTML = 'Mobile';
 
     } else {
 
@@ -237,7 +237,7 @@
         document.getElementById('youtube-video').width = to_log_1;
         //document.getElementById('profile-pic').width = to_log_1;
         document.getElementById('modal-box').className = 'modal-dialog modal-lg';
-        document.getElementById('mobile-checker').innerHTML = 'PC';
+        //document.getElementById('mobile-checker').innerHTML = 'PC';
 
         if (!('{{user.profile.profile_pic}}' == '')) {
             document.getElementById('profile-pic').width = to_log_1;
