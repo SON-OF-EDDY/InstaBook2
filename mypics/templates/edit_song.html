@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+
+{% block content%}
+
+{%if user.is_authenticated %}
+
+<h1>EDIT SONG DETAILS</h1>
+                <br>
+                <br>
+
+
+<form action="" method=POST enctype="multipart/form-data">
+{%csrf_token%}
+    {{form.as_p}}
+    <br>
+    <input type="submit" value="Update" class="btn btn-primary">
+</form>
+<br>
+                    <br>
+
+
+{%else%}
+    <h2>You must be logged in to view this page.</h2>
+
+{%endif%}
+
+{%endblock%}

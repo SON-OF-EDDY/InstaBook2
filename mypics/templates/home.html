@@ -1,0 +1,290 @@
+{%extends 'base.html'%}
+{% load static %}
+
+{% block content%}
+{%if user.is_authenticated%}
+
+<style>
+    img{
+        cursor: pointer;
+    }
+
+</style>
+
+<div id="mobile-checker"></div>
+
+<hr/>
+<h1>HOMEPAGE</h1>
+<hr/>
+
+<br>
+
+    <div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+                      <div class="col-md-4">
+                       {%if user.profile.profile_pic%}
+                          <img src="{{user.profile.profile_pic.url}}" class="img-fluid rounded-start" data-toggle="modal" data-target="#modalz{{user.profile.id}}">
+                        {%else%}
+                          <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" alt="...">
+                          {% endif %}
+
+                    </div>
+
+
+                      <div class="modal fade" id="modalz{{user.profile.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                <div id = 'modal-box' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                                <h5 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">PROFILE PICTURE</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body" style="width: auto; margin-left: auto; margin-right: auto">
+                                                  {%if user.profile.profile_pic%}
+                                                  <img id='profile-pic' src="{{user.profile.profile_pic.url}}" width = "400">
+                                                  {%endif%}
+                                              </div>
+                                                <div class="modal-footer">
+
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                                </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                      <script>
+
+                        function detectMob() {
+                            const toMatch = [
+                                /Android/i,
+                                /webOS/i,
+                                /iPhone/i,
+                                /iPad/i,
+                                /iPod/i,
+                                /BlackBerry/i,
+                                /Windows Phone/i
+                            ];
+
+                            return toMatch.some((toMatchItem) => {
+                                return navigator.userAgent.match(toMatchItem);
+                            });
+                        }
+
+                        if (detectMob()) {
+
+                            var to_log_1 = screen.availWidth * 0.95;
+                            var to_log_2 = to_log_1 * 0.9;
+
+                            document.getElementById('profile-pic').width = to_log_2;
+                            document.getElementById('modal-box').style["max-width"] = `${to_log_1}px`;
+
+                            document.getElementById('mobile-checker').innerHTML = 'Mobile';
+
+                        } else {
+
+                            //console.log('{{user.profile.profile_pic}}');
+
+                            // if the user has chosen a profile pic
+
+                            if (!('{{user.profile.profile_pic}}' == '')) {
+
+                                //console.log('there is an actual pic');
+
+                                var to_log_1 = (screen.availWidth * 0.5) ;
+
+                                var actual_width = document.getElementById('profile-pic').naturalWidth;
+
+                                if (actual_width > (to_log_1 * 0.9)) {
+
+                                    var to_log_2 = to_log_1 * 0.9;
+                                    //console.log(to_log_2);
+
+                                } else {
+                                    var to_log_2 = actual_width;
+                                    //console.log(to_log_2);
+                                }
+
+                                document.getElementById('profile-pic').width = to_log_2;
+                                document.getElementById('modal-box').style["max-width"] = `${to_log_1}px`;
+
+                            }
+                            // else they have the standard question mark profile pic...
+
+                            document.getElementById('mobile-checker').innerHTML = 'PC';
+
+
+                        }
+                    </script>
+
+
+
+
+
+
+
+                    <div class="col-md-8">
+                      <div class="card-body">
+
+                        <p style="font-size:18px;" class="card-title">{{user.username}}</p>
+                          <p style="font-size:24px;" class="card-text">{{user.first_name}}  {{user.last_name}}</p>
+                        <p style="font-size:14px;" class="card-text"><small class="text-muted">
+                            {%if user.profile.youtube_url%}
+                                <a href="{{user.profile.youtube_url}}">Youtube |</a>
+                            {%endif%}
+                            {%if user.profile.telegram_url%}
+                                <a href="{{user.profile.telegram_url}}"> Telegram |</a>
+                            {%endif%}
+                            {%if user.profile.vk_url%}
+                                <a href="{{user.profile.vk_url}}"> VK</a>
+                            {%endif%}
+                        </small></p>
+
+                           {%if user.profile.bio%}
+                                <p style="font-size:14px;" class="card-text">{{user.profile.bio}}</p>
+                          {%else%}
+                            No Bio!
+                          {%endif%}
+
+                          <br>
+                          {%if user.email%}
+                          <p style="font-size:14px;" >Email: {{user.email}}</p>
+                            {%endif%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+    <br>
+
+<hr/>
+
+<h5>TRENDING MUSIC VIDEOS:</h5>
+
+
+
+    <br>
+    <iframe id ='youtube-video' width="560" height="315" src="{{unique_embed_code_for_number_one_video}}"></iframe>
+<br>
+        <br>
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+                          <p style="font-size:18px;" class="card-title"><b>TOP 5:</b></p>
+                          <br>
+
+
+                          <ol type="1">
+
+        {%for entry in top_videos%}
+        <li><a href="{{entry.1}}">{{entry.0}}</a></li>
+                              <br>
+    {%endfor%}
+    </ol>
+
+                          <br>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+    <br>
+    <br>
+
+    {%endif%}
+
+<script>
+
+    function detectMob() {
+        const toMatch = [
+            /Android/i,
+            /webOS/i,
+            /iPhone/i,
+            /iPad/i,
+            /iPod/i,
+            /BlackBerry/i,
+            /Windows Phone/i
+        ];
+
+        return toMatch.some((toMatchItem) => {
+            return navigator.userAgent.match(toMatchItem);
+        });
+    }
+
+    //console.log(detectMob());
+
+    if (detectMob()) {
+
+        var to_log_1 = screen.availWidth * 0.9;
+        document.getElementById('youtube-video').width = to_log_1;
+        document.getElementById('profile-pic').width = to_log_1;
+        document.getElementById('modal-box').className = 'modal-dialog modal-sm';
+        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+
+    } else {
+
+        var to_log_1 = (screen.availWidth * 0.33) ;
+        document.getElementById('youtube-video').width = to_log_1;
+        //document.getElementById('profile-pic').width = to_log_1;
+        document.getElementById('modal-box').className = 'modal-dialog modal-lg';
+        document.getElementById('mobile-checker').innerHTML = 'PC';
+
+        if (!('{{user.profile.profile_pic}}' == '')) {
+            document.getElementById('profile-pic').width = to_log_1;
+
+        }
+
+
+    }
+</script>
+
+<hr/>
+
+<h5>TOP NEWS STORIES:</h5>
+<br>
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+                          <p style="font-size:18px;" class="card-title"><b>TOP 5:</b></p>
+                          <br>
+
+
+                          <ol>
+
+    {%for entry in top_stories%}
+        <li><a href="{{entry.1}}">{{entry.0}}</a></li>
+                              <br>
+    {%endfor%}
+
+    </ol>
+
+                          <br>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+    <br>
+    <br>
+
+
+
+
+
+{%endblock%}

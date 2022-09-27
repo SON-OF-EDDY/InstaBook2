@@ -1,0 +1,160 @@
+{%extends 'base.html'%}
+{% load static %}
+
+
+{% block content%}
+
+{%if user.is_authenticated%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<hr/>
+<h1>MY MESSAGES</h1>
+<hr/>
+<br>
+<br>
+
+<div>
+
+    {% if partner_profile.profile_pic%}
+
+    <img src="{{partner_profile.profile_pic.url}}" width="200">
+
+    {%else%}
+
+    <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width="200">
+
+    {%endif%}
+
+
+</div>
+
+
+
+<br>
+<h4>Conversation Partner: <b>"{{conversation_partner_name}}"</b></h4>
+<br>
+
+<a  href="{%url 'delete_dialogue' conversation_partner_2 current_user_profile_id%}" class="btn btn-outline-danger
+                              btn-sm">Delete/Refresh Dialogue</a>
+
+<br><br>
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><div id="display" style="word-break:break-all;">
+    {{entry.dialogue|linebreaks}}
+</div></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+<br>
+<br>
+<br>
+
+
+<form id="post-form" method="POST">
+{%csrf_token%}
+    <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br>
+    <input type="hidden" name="partner" id="partner" value="{{conversation_partner_2}}"><br>
+    <input class="btn btn-primary" type="submit" value="Send">
+</form>
+
+<br>
+<br>
+
+
+<script>
+$(document).on('submit','#post-form',function(e){
+
+    e.preventDefault();
+
+    $.ajax({
+        type:'POST',
+        url:"{% url 'CreateMessage'%}",
+        data:{
+            message:$('#message').val(),
+            partner:$('#partner').val(),
+
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function(data){
+            alert(data);
+        }
+    });
+});
+</script>
+
+
+
+{{ conversation_partner_2|json_script:'name' }}
+{{ current_user.profile.id|json_script:'name2' }}
+
+<script>
+
+   var conversation_partner = JSON.parse(document.getElementById('name').textContent);
+   var current_user_id = JSON.parse(document.getElementById('name2').textContent);
+
+   $(document).ready(function(){
+
+        setInterval(function(){
+            $.ajax({
+                type:'GET',
+                url:"{% url 'getConversations'%}",
+                success: function(response){
+                    $('#display').empty();
+                    console.log(response);
+
+                    for (var key in response.conversations)
+
+                    {
+
+                        if(response.conversations[key].member_1_id == current_user_id && response.conversations[key].member_2_id == conversation_partner ) {
+
+                            //var temp = "<div>"+response.conversations[key].dialogue+"</div>";
+                            var temp = response.conversations[key].dialogue;
+                            //$('#display').append(temp);
+                            document.getElementById('display').innerText = temp
+
+
+
+                        } else if (response.conversations[key].member_1_id == conversation_partner && response.conversations[key].member_2_id == current_user_id ) {
+
+                            //var temp = "<div>"+response.conversations[key].dialogue+"</div>";
+                            var temp = response.conversations[key].dialogue;
+                            //$('#display').append(temp);
+                            document.getElementById('display').innerText = temp
+                        }
+
+                    }
+
+                },
+
+
+            });
+        },250);
+
+   });
+
+</script>
+
+
+{%else%}
+<h3>You must be logged in to view this page.</h3>
+
+{%endif%}
+
+{%endblock%}

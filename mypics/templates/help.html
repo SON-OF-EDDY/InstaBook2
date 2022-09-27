@@ -1,0 +1,124 @@
+{%extends 'base.html'%}
+
+{% block content%}
+
+{%if user.is_authenticated %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<hr/>
+<h1>HELP FROM ADMIN</h1>
+<br>
+<h2>DIALOGUE HISTORY:</h2>
+<hr/>
+<br>
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><div id="display">
+    {{entry.dialogue|linebreaks}}
+</div></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+<br><br>
+
+
+<form id="post-form" method="POST">
+{%csrf_token%}
+    <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br><br>
+    <input class="btn btn-primary" type="submit" value="Send">
+</form>
+
+
+<script>
+$(document).on('submit','#post-form',function(e){
+
+    e.preventDefault();
+
+    $.ajax({
+        type:'POST',
+        url:"{% url 'CreateMessage2'%}",
+        data:{
+            message:$('#message').val(),
+
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function(data){
+            alert(data);
+        }
+    });
+});
+</script>
+
+{{ current_user|json_script:'name2' }}
+
+<script>
+
+
+   var current_user = JSON.parse(document.getElementById('name2').textContent);
+
+   $(document).ready(function(){
+
+        setInterval(function(){
+            $.ajax({
+                type:'GET',
+                url:"{% url 'getHelp'%}",
+                success: function(response){
+                    $('#display').empty();
+                    console.log(response);
+
+                    for (var key in response.helps)
+
+                    {
+
+                        if(response.helps[key].user_asking_help == current_user) {
+
+                            var temp = response.helps[key].dialogue;
+
+                            document.getElementById('display').innerText = temp
+
+                        }
+
+                    }
+
+                },
+
+
+            });
+        },250);
+   });
+
+</script>
+
+
+
+
+
+
+
+
+{%else%}
+    <h2>You must be logged in to view this page.</h2>
+
+{%endif%}
+
+{%endblock%}

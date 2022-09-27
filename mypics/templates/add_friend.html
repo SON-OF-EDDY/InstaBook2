@@ -1,0 +1,213 @@
+{%extends 'base.html'%}
+{% load static %}
+{% block content%}
+
+{%if user.is_authenticated %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+  <script type="text/javascript">
+    //window.addEventListener('beforeunload', function (e) {
+      //e.preventDefault();
+      //e.returnValue = '';
+    //});
+  </script>
+
+
+{%if display %}
+<hr/>
+<h1>MY FRIENDS:</h1>
+<hr/>
+<br><br>
+
+{%if final_list%}
+
+{%for friend in final_list%}
+
+<b>Username:</b> {{friend.member.username}}
+        <br>
+        <br>
+
+<font size="5" id="status{{friend.id}}" color="#00FF7F"></font>
+
+<br>
+<div ></div>
+<br>
+
+
+        <script>
+
+        $(document).ready(function(){
+
+        setInterval(function(){
+
+            $.ajax({
+                type:'GET',
+                url:"{% url 'getStatus'%}",
+                success: function(response){
+
+                    //$('#status'+'{{friend.id}}').empty();
+
+                    console.log('MEMBER: '+'{{friend.member.id}}');
+
+                    for (var key in response.all_profiles){
+
+                        member_id = response.all_profiles[key].member_id;
+                        console.log(member_id);
+
+                        online = response.all_profiles[key].online;
+                        console.log(online);
+
+                        if ('{{friend.member.id}}' == member_id) {
+                            console.log('MATCH!');
+
+                            if (online === true) {
+
+                                document.getElementById('status'+{{friend.id}}).innerHTML = '<b>ONLINE</b>';
+                                document.getElementById('status'+{{friend.id}}).color = '00FF7F';
+
+                            } else {
+                                document.getElementById('status'+{{friend.id}}).innerHTML = '<b>OFFLINE</b>';
+                                document.getElementById('status'+{{friend.id}}).color = 'red';
+
+                            }
+
+
+
+                        }
+
+
+                    }
+
+
+                },
+
+
+            });
+        },250);
+   });
+
+
+
+        </script>
+
+
+
+        <br>
+        <b>Profile Pic:</b><br>
+
+        {%if friend.profile_pic%}
+        <img src="{{friend.profile_pic.url}}" width = 100>
+        {%else%}
+        <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+        {%endif%}
+
+
+        <br>
+            <b>Profile Page:</b> <a  href="{% url 'my_profile' friend.member.id%}">{{friend.member.username}}'s page</a>
+            <br>
+            <br>
+
+
+            <button type="button" class="btn btn-outline-danger
+
+        btn-sm" data-toggle="modal" data-target="#{{friend.id}}">
+                                    Delete Friend
+                                          </button>
+
+            <br><br>
+
+
+        <div class="modal fade" id="{{friend.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">WARNING</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                          <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        Are you sure you want to delete this friend?
+                                                      </div>
+                                                        <div class="modal-footer">
+
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+                                                          <a  href="{%url 'delete_friend' friend.id%}" class="btn btn-outline-primary
+                                                              btn-sm">Yes</a>
+
+                                                        </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+
+
+
+            <a  href="{%url 'add_message' friend.id%}" class="btn btn-outline-primary
+                                      btn-sm">Send Message</a>
+
+
+            <br>
+            <hr/>
+
+
+            <br>
+
+    {%endfor%}
+
+{%else%}
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h2>You currently have no friends!</h2>
+    <br>
+<h2>Visit the <a href="{% url 'my_recommendations' user.id%}">MyRecommendations</a> page to add some new friends!!!</h2> </p>
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+{%endif%}
+
+
+
+{% else %}
+
+<h2>You don't have authorisation to view this page.</h2>
+
+
+{% endif %}
+
+
+{%else%}
+
+<h2>You must be logged in to view this page.</h2>
+
+{%endif%}
+
+{%endblock%}

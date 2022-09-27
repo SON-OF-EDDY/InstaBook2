@@ -1,0 +1,416 @@
+{%extends 'base.html'%}
+{% load static %}
+
+{% block content%}
+
+{%if user.is_authenticated%}
+
+<hr/>
+<h1>MY REQUESTS</h1>
+<hr/>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+    {%if accepted_list%}
+
+    <div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">THE FOLLOWING USERS <font style="color:green;"><b>ACCEPTED</b></font> THE FRIEND REQUEST YOU SENT THEM:</p>
+
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+    <table class="table">
+
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Profile Pic</th>
+            <th scope="col">UserName</th>
+
+        </tr>
+      </thead>
+
+
+    <tbody>
+
+          {%for entry in list_2%}
+
+              <tr>
+
+                  <td>
+
+                      {%if entry.profile_pic%}
+
+                      <img src="{{entry.profile_pic.url}}" width = 100>
+
+                      {%else%}
+
+                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+
+                      {%endif%}
+
+
+                  </td>
+
+
+
+                  <td>{{entry.member.username}}</td>
+
+              </tr>
+
+          {%endfor%}
+
+      </tbody>
+
+    </table>
+
+    <br>
+    <br>
+
+    {%endif%}
+
+
+    {%if declined_list%}
+
+
+
+
+
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">THE FOLLOWING USERS <font style="color:red;"><b>DECLINED</b></font> THE FRIEND REQUEST YOU SENT THEM:</p>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+    <table class="table">
+
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Profile Pic</th>
+            <th scope="col">UserName</th>
+
+        </tr>
+      </thead>
+
+
+    <tbody>
+
+          {%for entry in list_4%}
+
+              <tr>
+                  <td>
+
+
+
+
+
+                  {%if entry.profile_pic%}
+
+                      <img src="{{entry.profile_pic.url}}" width = 100>
+
+                      {%else%}
+
+                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+
+                      {%endif%}
+
+
+
+
+
+                  </td>
+                  <td>{{entry.member.username}}</td>
+
+              </tr>
+
+          {%endfor%}
+
+      </tbody>
+
+    </table>
+
+    {%endif%}
+
+<br><br>
+
+{%if show%}
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">PLEASE ACCEPT OR DECLINE:</p>
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+                        <table class="table">
+
+                                        <thead class="thead-dark">
+                                        <tr>
+                                          <th scope="col">Profile Pic</th>
+                                            <th scope="col">UserName</th>
+                                            <th scope="col">Options</th>
+
+                                        </tr>
+                                      </thead>
+
+                                      <tbody>
+
+                                          {%for entry in final_list%}
+
+                                              <tr>
+
+                                                  <td>
+
+                                                      {%if entry.profile_pic%}
+
+                      <img src="{{entry.profile_pic.url}}" width = 100>
+
+                      {%else%}
+
+                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+
+                      {%endif%}
+
+
+                                                  </td>
+
+                                                  <td>{{entry.member.username}}</td>
+                                                  <td>
+
+                                                      <a  href="{% url 'accept' entry.id url_id %}" class="btn btn-primary
+                                                  btn-sm">Accept</a>
+
+                                                      <br><br>
+
+                                                      <a  href="{%url 'decline' entry.id url_id %}" class="btn btn-dark
+                                              btn-sm">Decline</a>
+
+                                                  </td>
+
+                                              </tr>
+
+
+                                          {%endfor%}
+
+                                      </tbody>
+                                    </table>
+
+
+{%else%}
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">No requests from other users for you to accept or decline.</p>
+
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+{%endif%}
+
+
+
+
+
+
+    <br>
+        <br>
+
+
+    {%if show_2%}
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">WAITING ON (FRIEND REQUESTS):</p>
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <table class="table">
+
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Profile Pic</th>
+            <th scope="col">UserName</th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+
+          {%for entry in list_3%}
+
+              <tr>
+                  <td>
+
+
+
+                      {%if entry.profile_pic%}
+
+                      <img src="{{entry.profile_pic.url}}" width = 100>
+
+                      {%else%}
+
+                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+
+                      {%endif%}
+
+
+
+                  </td>
+                  <td>{{entry.member.username}}</td>
+
+              </tr>
+
+          {%endfor%}
+
+      </tbody>
+    </table>
+
+    {%else%}
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text">You are not waiting for anyone to accept requests you have sent to them.</p>
+
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+    <br>
+<br>
+
+
+    {%endif%}
+
+    <br>
+    <br>
+    <br>
+
+
+{%else%}
+<h2>You must be logged in to view this page.</h2>
+
+
+
+
+{%endif%}
+
+{%endblock%}

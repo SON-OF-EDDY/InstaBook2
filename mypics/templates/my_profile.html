@@ -1,0 +1,1355 @@
+{%extends 'base.html'%}
+{% load static %}
+
+{% block content%}
+{%if user.is_authenticated%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div id="mobile-checker"></div>
+
+<script>
+
+</script>
+
+
+<style>
+    img{
+        cursor: pointer;
+    }
+
+    p{
+    cursor: pointer;
+    }
+
+    #clickableAwesomeFont {
+
+        cursor: pointer;
+    }
+
+    #clickableAwesomeFont2 {
+
+        cursor: pointer;
+    }
+
+
+
+</style>
+
+
+<br>
+
+{%if logged_on_user_formatted != current_user%}
+<hr/>
+                 <h1>{{user_1.username}}'s PROFILE PAGE</h1>
+<hr/>
+{%else%}
+<hr/>
+                 <h1>MY PROFILE PAGE</h1>
+<hr/>
+{%endif%}
+
+
+
+
+<div class="card mb-3" style="max-width: 540px;">
+
+                  <div class="row g-0">
+
+                      <div class="col-md-4">
+                       {%if member_instance.profile_pic%}
+                        <img src="{{member_instance.profile_pic.url}}" data-toggle="modal" data-target="#modalz{{user_1.id}}" width="150">
+                        {%else%}
+                        <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" alt="...">
+                        {%endif%}
+
+                    </div>
+
+
+                      <div class="col-md-8">
+                      <div class="card-body">
+
+                        <p style="font-size:18px;" class="card-title">{{user_1.username}}</p>
+                          <p style="font-size:24px;" class="card-text">{{user_1.first_name}}  {{user_1.last_name}}</p>
+                        <p style="font-size:14px;" class="card-text">
+                            <small class="text-muted">
+
+                                <a href="{{user.profile.youtube_url}}">Youtube |</a>
+
+
+                                <a href="{{user.profile.telegram_url}}"> Telegram |</a>
+
+
+                                <a href="{{user.profile.vk_url}}"> VK</a>
+
+                        </small></p>
+
+                           {%if user.profile.bio%}
+                                <p style="font-size:14px;" class="card-text">{{member_instance.bio}}</p>
+                          {%else%}
+                            No Bio!
+                          {%endif%}
+
+                          <br>
+                          {%if user.email%}
+                          <p style="font-size:14px;" >Email: {{member_instance.email}}</p>
+                            {%endif%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+<div class="modal fade" id="modalz{{user_1.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div id ='profile-modal' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                    <h5 class="modal-title w-100" id="exampleModalLabel3" style="text-align:center">TITLE: "{{user_1.username}}"</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" style="width: auto; margin-left: auto; margin-right: auto">
+                      {%if member_instance.profile_pic%}
+                        <img id ='profile-pic-1' src="{{member_instance.profile_pic.url}}" data-toggle="modal" data-target="#modalz{{user_1.id}}" width="600">
+                        {%endif%}
+                  </div>
+                    <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+
+    function detectMob() {
+        const toMatch = [
+            /Android/i,
+            /webOS/i,
+            /iPhone/i,
+            /iPad/i,
+            /iPod/i,
+            /BlackBerry/i,
+            /Windows Phone/i
+        ];
+
+        return toMatch.some((toMatchItem) => {
+            return navigator.userAgent.match(toMatchItem);
+        });
+    }
+
+
+    if (detectMob()) {
+
+        var to_log_1 = (screen.availWidth * 0.95);
+        var to_log_2 = to_log_1 * 0.9;
+
+        document.getElementById("profile-modal").style["max-width"] = `${to_log_1}px`;
+
+        document.getElementById('profile-pic-1').width = to_log_2;
+        console.log('MOB chosen pic');
+
+        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+
+    } else {
+
+        var to_log_1 = (screen.availWidth * 0.5) ;
+
+        var actual_width = document.getElementById('profile-pic-1').naturalWidth;
+
+        if (actual_width > (to_log_1 * 0.9)) {
+            var to_log_2 = to_log_1 * 0.9;
+
+        } else {
+            var to_log_2 = actual_width;
+        }
+
+        document.getElementById("profile-modal").style["max-width"] = `${to_log_1}px`;
+
+        document.getElementById('profile-pic-1').width = to_log_2;
+        console.log('PC chosen pic');
+
+        document.getElementById('mobile-checker').innerHTML = 'PC';
+
+    }
+</script>
+
+
+{%if show%}
+
+
+<br><br>
+
+
+<hr/>
+<h1 id="my-pics">MY PICS:</h1>
+<hr/>
+
+
+{%if logged_on_user_formatted != current_user%}
+    <script>
+        var pictures_header  = document.getElementById('my-pics');
+        pictures_header.innerHTML = "{{current_user}}'s PICS:";
+    </script>
+{%endif%}
+
+
+
+<br>
+
+<span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x"></i></span>
+
+<br><br><h6><b>TO SONGS</b></h6>
+
+
+<script>
+    document.getElementById('clickableAwesomeFont').onclick = function() {
+
+        setTimeout(function () {
+            document.getElementById("changing-icon").className = 'fa-regular fa-circle-down fa-3x';
+            console.log(document.getElementById("changing-icon").className);
+          }, 125);
+
+
+          setTimeout(function () {
+            document.getElementById("changing-icon").className = 'fa-solid fa-circle-down fa-3x';
+            console.log(document.getElementById("changing-icon").className);
+            document.getElementById("my-songs").scrollIntoView();
+          }, 250);
+
+    };
+</script>
+
+
+<br>
+<br>
+
+{%if pics_show%}
+
+
+<table class="table">
+
+                    <thead class="thead-dark">
+
+                    <tr>
+
+                      <th scope="col"></th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                      {%for entry in list_of_users_pics%}
+
+                          <tr>
+                              <td style="word-break:break-all;"><b>Title: </b>{{entry.title}}<br><br><b>Description: </b>{{entry.description}}<br><br>
+
+                              <img src="{{entry.picture_image.url}}" data-toggle="modal" data-target="#modal{{entry.id}}" width="100">
+
+
+                              <div class="modal fade" id="modal{{entry.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                <div id = 'type{{entry.id}}' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                                <h5 class="modal-title w-100" id="exampleModalLabel2">TITLE: "{{entry.title}}"</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body" style="width: auto; margin-left: auto; margin-right: auto">
+                                                  <img id = "resize{{entry.id}}" src="{{entry.picture_image.url}}" width = "600">
+                                              </div>
+<script>
+
+    function detectMob() {
+        const toMatch = [
+            /Android/i,
+            /webOS/i,
+            /iPhone/i,
+            /iPad/i,
+            /iPod/i,
+            /BlackBerry/i,
+            /Windows Phone/i
+        ];
+
+        return toMatch.some((toMatchItem) => {
+            return navigator.userAgent.match(toMatchItem);
+        });
+    }
+
+    if (detectMob()) {
+
+        var to_log_1 = screen.availWidth * 0.95;
+        var to_log_2 = to_log_1 * 0.9;
+
+        document.getElementById('resize'+{{entry.id}}).width = to_log_2;
+        document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
+        //document.getElementById("profile-modal").style["max-width"] = `${to_log_1}px`;
+
+        document.getElementById('mobile-checker').innerHTML = 'Mobile';
+
+    } else {
+
+        var to_log_1 = (screen.availWidth * 0.5) ;
+
+        var actual_width = document.getElementById('resize'+{{entry.id}}).naturalWidth;
+
+        if (actual_width > (to_log_1 * 0.9)) {
+            var to_log_2 = to_log_1 * 0.9;
+
+        } else {
+            var to_log_2 = actual_width;
+        }
+
+        document.getElementById('resize'+{{entry.id}}).width = to_log_2;
+        document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
+
+        document.getElementById('mobile-checker').innerHTML = 'PC';
+
+
+    }
+</script>
+
+
+
+
+
+                                                                        <div class="modal-footer justify-content-between">
+
+                                                                            <div>
+
+
+
+                                                                                <br>
+
+                                                                                NUMBER OF LIKES:
+
+
+                                                                                <a id="{{entry.id}}"></a>
+                                                                                <br><br>
+
+
+                                                                            {% for item in list_whose_hearted_for_each_pic%}
+
+                                                                                {%if item.0 == entry.id%}
+
+                                                                                        <form id="post-form-{{entry.id}}" method="POST">
+                                                                                             {%csrf_token%}
+
+                                                                                            <input type="hidden" name="userid" id="userid" value="{{entry.id}}">
+                                                                                            <input type="submit" class="btn btn-outline-danger
+btn-sm" value="Put Like ❤" name="mybutton{{entry.id}}" id="mybutton{{entry.id}}">
+                                                                                            <input type="submit" class="btn btn-outline-danger
+btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entry.id}}">
+                                                                                        </form>
+
+
+                                                                                {%endif%}
+
+                                                                            {%endfor%}
+
+
+                                                                                <br>
+
+
+                                                                                <button id = 'show{{entry.id}}' type="button" class="btn btn-primary">SHOW LIKERS</button>
+
+                                                                                <br>
+
+                                                                                <script>
+
+                                                                                    var counter = 0;
+
+                                                                                    document.getElementById('show'+{{entry.id}}).onclick = function() {
+
+                                                                                        counter = counter + 1;
+
+                                                                                        if (counter % 2 === 0) {
+
+                                                                                            document.getElementById('p'+{{entry.id}}).hidden = true
+                                                                                            document.getElementById('show'+{{entry.id}}).innerHTML = 'SHOW LIKERS'
+
+                                                                                        } else {
+
+                                                                                            document.getElementById('p'+{{entry.id}}).hidden = false
+                                                                                            document.getElementById('show'+{{entry.id}}).innerHTML = 'HIDE LIKERS'
+
+
+                                                                                        }
+
+                                                                                    };
+                                                                                </script>
+
+
+                                                                                <p id = "p{{entry.id}}" hidden></p>
+
+
+                                                                                </div>
+
+
+
+
+                                                                            </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+
+                              </td>
+
+
+
+
+                          </tr>
+
+
+                      {%endfor%}
+
+                  </tbody>
+                </table>
+
+
+
+
+{%else%}
+
+
+    {%if logged_on_user_formatted != current_user%}
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h2>This user has no pics to display.</h2></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+    {%else%}
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h3>You have no pics!</h3>
+        <h3>Visit the <a href="{% url 'add_pics'%}">MyPics</a> page to add some new pics!!!</h3></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+    {%endif%}
+
+
+{%endif%}
+
+
+
+
+
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+{%for entry in list_of_users_pics%}
+
+    <script>
+
+
+
+
+           $(document).ready(function(){
+
+                setInterval(function(){
+                    $.ajax({
+                        type:'GET',
+                        url:"{% url 'getPictures'%}",
+                        success: function(response){
+
+
+                            for (var key in response.pictures)
+
+                            {
+
+                                if(response.pictures[key].id == {{entry.id}}) {
+
+                                    var temp = response.pictures[key].likes+' ❤';
+
+                                    var author = response.pictures[key].author;
+
+
+                                    if (response.pictures[key].hearted == null ) {
+
+                                        var hearted = [''];
+
+
+
+                                    } else {
+
+                                        var final_string = '<br>';
+                                        var hearted = response.pictures[key].hearted;
+                                        var heartedarray = hearted.split(",");
+
+
+
+                                        $.ajax({
+                                        url: "{% url 'getUsers'%}",
+                                        type: 'GET',
+
+                                        success: function(response) {
+
+                                            for (var key in response.all_profiles){
+
+                                                member_id = response.all_profiles[key].member_id;
+
+                                                user_id = response.all_profiles[key].user_id;
+
+                                                //console.log(user_id);
+
+
+                                                if (heartedarray.includes(member_id)) {
+
+
+                                                    username = response.all_profiles[key].username;
+
+
+                                                    if (username == '{{logged_on_user_formatted}}') {
+
+                                                        username = 'me';
+                                                    }
+
+                                                    var hyperlink = `/my_profile/${user_id}`;
+
+
+                                                    final_string = final_string + '<br>' + '<a href="' + hyperlink  +'"' +'>' + username+'</a>';
+                                                    //console.log(final_string);
+
+
+                                                }
+
+
+                                            }
+
+                                            final_string = final_string + '<br>';
+
+
+                                            if (final_string == '<br><br>') {
+                                                final_string = '<br> No Likers';
+                                            }
+
+                                            document.getElementById('p'+{{entry.id}}).innerHTML = final_string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        }
+                                    });
+
+
+
+
+
+
+
+                                    }
+
+
+                                    var heartedarray = hearted.split(",");
+
+                                    var loggeduser = response.current_user;
+
+                                    var username = response.username;
+
+
+                                    var loggeduser2 = loggeduser.toString();
+
+
+                                    // ##########################################################################
+                                    // ##########################################################################
+
+                                    // ok so basically i need to make a string
+                                    // that has all the usernames of the people in hearted
+
+                                    // maybe a mini ajax in here to get allusers???
+
+
+                                    // instead of entry.id i need a value from hearted...
+
+
+
+                                    document.getElementById({{entry.id}}).innerText = temp
+
+                                    // #########################################################################
+                                    // #########################################################################
+
+
+                                    if (author == username) {
+
+                                        document.getElementById('mybutton2'+{{entry.id}}).hidden = true
+                                        document.getElementById('mybutton'+{{entry.id}}).hidden = true
+
+
+                                    }
+
+                                    else {
+
+
+
+
+                                                    if (hearted == '') {
+
+                                                        //console.log(loggeduser2)
+                                                        //console.log(hearted)
+                                                        //console.log(typeof loggeduser2);
+                                                        //console.log(heartedarray)
+                                                        //console.log(typeof heartedarray)
+
+                                                        //console.log('HEARTED IS EMPTY STRING!!!')
+                                                        //console.log('checking2'+{{entry.id}})
+                                                        //document.getElementById('checking2'+{{entry.id}}).innerText = 'PUT LIKE - null'
+                                                        document.getElementById('mybutton2'+{{entry.id}}).hidden = true
+                                                        document.getElementById('mybutton'+{{entry.id}}).hidden = false
+
+
+
+                                                    } else if (!(heartedarray.includes(loggeduser2))) {
+
+                                                        //console.log(loggeduser2)
+                                                        //console.log(hearted)
+
+                                                        //console.log(typeof loggeduser2);
+                                                        //console.log(heartedarray)
+                                                        //console.log(typeof heartedarray)
+                                                        //console.log('USER IS NOT IN HEARTED!')
+
+                                                        //console.log('checking2'+{{entry.id}})
+
+                                                        //document.getElementById('checking2'+{{entry.id}}).innerText = 'PUT LIKE- STANDARD'
+                                                        document.getElementById('mybutton2'+{{entry.id}}).hidden = true
+                                                        document.getElementById('mybutton'+{{entry.id}}).hidden = false
+
+                                                    } else if (heartedarray.includes(loggeduser2)) {
+
+                                                        //console.log(loggeduser2)
+                                                        //console.log(heartedarray)
+
+                                                        //console.log(typeof loggeduser2);
+                                                        //console.log(heartedarray)
+                                                        //console.log(typeof heartedarray)
+                                                        //console.log('USER IS!!! in heartedarray')
+
+                                                        //console.log('checking2'+{{entry.id}})
+                                                        //document.getElementById('checking2'+{{entry.id}}).innerText = 'REMOVE LIKE'
+                                                        document.getElementById('mybutton'+{{entry.id}}).hidden = true
+                                                        document.getElementById('mybutton2'+{{entry.id}}).hidden = false
+
+                                                    } else {
+
+                                                        //console.log(loggeduser2)
+                                                        //console.log(typeof loggeduser2);
+
+                                                        //console.log(typeof heartedarray)
+                                                        //console.log(heartedarray)
+
+                                                        //console.log('other case...')
+                                                        //console.log('checking2'+{{entry.id}})
+                                                        //document.getElementById('checking2'+{{entry.id}}).innerText = 'SOMETHING ELSE...'
+
+                                                    }
+
+                                    }
+                                }
+
+                            }
+
+                        },
+                    });
+
+
+
+
+
+
+                },1000);
+           });
+
+    </script>
+
+{%endfor%}
+
+
+<script type="text/javascript">
+
+        $(document).on('submit',"form",function(e){
+
+            var test2 = $(this).find("input[type=submit]:focus").attr('id');
+
+            var oForm = $(this);
+            var formId = oForm.attr("id");
+            //console.log(formId);
+
+            var firstValue = oForm.find("input#userid").val();
+            //console.log(firstValue);
+
+            var check = 'post-form-'+firstValue;
+
+            if (formId == check) {
+
+                console.log('like/dislikes section');
+
+
+                var secondValue = $(this).closest('form').find('input').eq(2).val();
+                var thirdValue = $(this).closest('form').find('input').eq(3).val();
+
+                var test  = $(this).closest('form').find('input').eq(2).attr('id');
+
+                //document.getElementById(test2).style.visibility = 'hidden';
+
+                //$(this).hide();
+
+                console.log(oForm);
+                //console.log(formId);
+                console.log(firstValue);
+                console.log(secondValue);
+                console.log(thirdValue);
+                console.log(test);
+                console.log(test2);
+
+                e.preventDefault();
+
+                if (test === test2) {
+
+                    $.ajax({
+                        type:'POST',
+                        url:"{% url 'put_like'%}",
+                        data:{
+
+                            userid:firstValue,
+
+                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success: function(data){
+                            document.getElementById(test2).style.visibility = 'visible';
+                            //document.getElementById(test2).style.visibility = 'visible';
+
+
+                        }
+                    });
+
+
+                }else {
+
+                    $.ajax({
+                        type:'POST',
+                        url:"{% url 'remove_like'%}",
+                        data:{
+
+                            userid:firstValue,
+
+                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success: function(data){
+                            document.getElementById(test2).style.visibility = 'visible';
+                            //document.getElementById(test).style.visibility = 'visible';
+
+
+                        }
+                    });
+
+                }
+
+            }
+
+
+        });
+
+
+</script>
+
+
+<hr/>
+<h1 id="my-songs">MY SONGS:</h1>
+<hr/>
+
+
+{%if logged_on_user_formatted != current_user%}
+    <script>
+        var songs_header  = document.getElementById('my-songs');
+        songs_header.innerHTML = "{{current_user}}'s SONGS:";
+    </script>
+{%endif%}
+
+
+
+
+<br>
+<br>
+
+
+
+
+
+
+<form id ='search-song' class="d-flex" role="search" method = 'POST'>
+            {% csrf_token%}
+          <input id ='song-input' name="song-input" class="form-control me-2" type="search" placeholder="Enter a song and/or artist..." aria-label="Search">
+        <input type="hidden" name="user-id" id="user-id" value="{{user_1.username}}">
+        <input type="submit" class="btn btn-primary" value="Search" name="search-button" id="search-button">
+      </form>
+
+<br>
+<br>
+
+
+<div id ='main-area'>
+</div>
+
+<br>
+<br>
+
+
+
+{%if songs_show%}
+
+
+                    <h3>ALL SONGS:</h3>
+
+
+
+
+                    <table class="table">
+
+                    <thead class="thead-dark">
+
+                    <tr>
+
+                      <th scope="col"></th>
+
+
+
+
+
+                    </tr>
+
+                  </thead>
+
+                        <tbody>
+
+                      {%for entry in list_of_users_songs%}
+
+                          <tr>
+
+                              <td style="word-break:break-all;"><b>Title:</b><br>
+                                  {{entry.title}}
+                                  <br>
+                                  <br>
+                                  <b>Artist:</b>
+                                  <br>
+                                  {{entry.artist}}
+
+                                    <br><br>
+
+                                  <audio id ='my-audio{{entry.id}}' controls style="width: 300px;">
+                                    <source src="{{entry.song_file.url}}" type="audio/mp3">
+                                    </audio>
+
+
+                                  <script>
+
+                                            function detectMob() {
+                                                const toMatch = [
+                                                    /Android/i,
+                                                    /webOS/i,
+                                                    /iPhone/i,
+                                                    /iPad/i,
+                                                    /iPod/i,
+                                                    /BlackBerry/i,
+                                                    /Windows Phone/i
+                                                ];
+
+                                                return toMatch.some((toMatchItem) => {
+                                                    return navigator.userAgent.match(toMatchItem);
+                                                });
+                                            }
+
+
+                                            if (detectMob()) {
+
+                                                document.getElementById('my-audio'+{{entry.id}}).style["max-width"] = '300px';
+
+                                            } else {
+
+                                                document.getElementById('my-audio'+{{entry.id}}).style["max-width"] = '300px';
+                                            }
+
+
+                                        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              </td>
+
+
+                          </tr>
+
+                      {%endfor%}
+
+                  </tbody>
+
+
+                </table>
+
+{%else%}
+
+{%if logged_on_user_formatted != current_user%}
+
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h2>This user has no songs to display.</h2></p>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+    {%else%}
+
+<div class="card mb-3" style="max-width: 540px;">
+                  <div class="row g-0">
+
+
+<div class="col-md-8">
+                      <div class="card-body">
+
+
+                          <p style="font-size:24px;" class="card-text"><h3>You have no songs!</h3>
+        <h3>Visit the <a href="{% url 'add_song'%}">MySongs</a> page to add some new songs!!!</h3>
+    </p>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+    {%endif%}
+
+
+{%endif%}
+
+
+<br>
+<br>
+
+<br>
+
+
+
+
+<script>
+
+                    $(document).on('submit',"form",function(e){
+
+
+                            var oForm = $(this);
+                            var formId = oForm.attr("id");
+
+
+                            if (formId == 'search-song') {
+
+                                console.log('search bar');
+
+                                e.preventDefault();
+
+                                var inputValue = oForm.find("input#song-input").val();
+                                var secondValue = $(this).closest('form').find('input').eq(2).val();
+
+                                console.log(`queryis: ${inputValue}`);
+                                console.log(`user is: ${secondValue}`);
+
+
+                                if (!(inputValue)=='') {
+
+                                        console.log('query is not null');
+
+
+                                        $.ajax({
+                                                type:'POST',
+                                                url:"{% url 'filter_songs'%}",
+                                                data:{
+
+                                                    song_name:inputValue,
+                                                    user_name:secondValue,
+
+                                                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                                },
+
+                                                success: function(response){
+
+                                                    console.log(response);
+                                                    var size = response.filtered_song_list.length;
+                                                    console.log(size);
+
+
+                                                    // we gotta check here for the case of no results
+                                                    // create our own div and put him in the document instead
+                                                    // or just do nothing...
+
+
+                                                    if (!(size==0)) {
+
+
+                                                                        function tableCreate(row, col){
+
+                                                                            if (document.getElementById('search-results')) {
+
+                                                                                document.getElementById('search-results').remove();
+                                                                                console.log("previous table deleted!");
+
+                                                                            } else {
+
+                                                                                console.log("there is no table yet!");
+                                                                            }
+
+
+                                                                            //gotta delete old DIVS here too LOL
+
+                                                                            if (document.getElementById('no-results-box')) {
+
+                                                                                document.getElementById('no-results-box').remove();
+                                                                                console.log("previous DIV deleted!");
+
+                                                                            } else {
+
+                                                                                console.log("there is no div yet!");
+                                                                            }
+
+
+                                                                            let body = document.body;
+                                                                            let tbl  = document.createElement('table');
+                                                                            tbl.setAttribute("id", "search-results");
+                                                                            tbl.setAttribute("class","table");
+
+                                                                            let tr = tbl.insertRow();
+
+                                                                            let header = ['Title and Artist','File'];
+
+                                                                            var bold = document.createElement('strong');
+
+                                                                            for(let j = 0; j < col; j++){
+                                                                                        let td = tr.insertCell();
+                                                                                        td.appendChild(document.createTextNode(`${header[j]}`));
+
+                                                                                        //td.style.border = '1px solid black';
+                                                                                        //td.style.borderColor = "black";
+                                                                                        //td.style.backgroundColor = "white";
+                                                                                        //td.style.color = 'black';
+                                                                                        td.style.fontWeight = 'bold';
+                                                                                        //td.style.border = '3px solid black';
+                                                                                    }
+
+
+                                                                            console.log("new table created");
+
+
+                                                                            //tbl.style.width  = '1000px';
+                                                                            //tbl.style.border = '3px solid black';
+
+                                                                            for(let i = 0; i < row; i++){
+                                                                                let tr = tbl.insertRow();
+
+                                                                                for(let j = 0; j < col; j++){
+
+
+                                                                                        let td = tr.insertCell();
+
+
+
+
+                                                                                        td.innerHTML = `${response.filtered_song_list[i][j]}`;
+
+
+
+                                                                                        //td.style.border = '3px solid black';
+                                                                                        //td.style.width  = '500px';
+
+                                                                                    }
+                                                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                            //body.appendChild(tbl);
+                                                                            document.getElementById('main-area').appendChild(tbl);
+
+                                                                        }
+
+                                                                        tableCreate(size,1);
+
+                                                    // this is the end of the if for SIZE
+                                                    } else {
+
+                                                        //gotta delete old divs too...
+
+                                                        console.log('there are no results!!!!');
+
+                                                        if (document.getElementById('no-results-box')) {
+
+                                                            document.getElementById('no-results-box').remove();
+                                                            console.log("previous DIV deleted!");
+
+                                                        } else {
+
+                                                            console.log("there is no div yet!");
+                                                        }
+
+                                                        // gotta delete the table if it exists here too...
+
+                                                        if (document.getElementById('search-results')) {
+
+                                                            document.getElementById('search-results').remove();
+                                                            console.log("previous table deleted!");
+
+                                                        } else {
+
+                                                            console.log("there is no table yet!");
+                                                        }
+
+
+                                                        var box = document.createElement("div");
+
+
+                                                        box.setAttribute("id","no-results-box");
+                                                        box.innerHTML = `Sorry, no results found for '${inputValue}' !`;
+                                                        box.style.fontWeight = 'bold';
+                                                        document.getElementById('main-area').appendChild(box);
+                                                        //document.getElementById().appendChild(box);
+
+                                                    }
+
+
+                                                // this is the end of the success function
+                                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            //end of ajax
+                                            });
+
+
+
+
+                                //end of if query is null
+                                } else {
+                                    //gotta delete any old tables from before if exist...
+                                    console.log(" query is null!!!");
+
+                                    if (document.getElementById('search-results')) {
+
+                                        document.getElementById('search-results').remove();
+                                        console.log("previous table deleted!");
+
+                                    } else {
+
+                                        console.log("there is no table yet!");
+                                    }
+
+
+                                    //gotta delete old DIVS too
+
+                                    if (document.getElementById('no-results-box')) {
+
+                                        document.getElementById('no-results-box').remove();
+                                        console.log("previous DIV deleted!");
+
+                                    } else {
+
+                                        console.log("there is no div yet!");
+                                    }
+
+
+                                }
+
+                            }
+
+                    });
+                </script>
+
+
+
+
+
+
+
+
+
+
+
+
+<span id='clickableAwesomeFont2'><i id='changing-icon2' class="fa-solid fa-circle-up fa-3x"></i></span>
+
+<br><br><h6><b>TO PICS</b></h6>
+
+<script>
+        function animate_icon() {
+
+                          var icon = document.getElementById('changing-icon2');
+
+                          // change to 2
+                          setTimeout(function () {
+                            icon.className = "fa-regular fa-circle-up fa-3x";
+                          }, 125);
+
+                          //back to 1
+                          setTimeout(function () {
+                            icon.className = "fa-solid fa-circle-up fa-3x";
+                          }, 250);
+
+                     }
+
+                    document.getElementById('clickableAwesomeFont2').onclick = function() {
+                        animate_icon();
+                        setTimeout(function () {
+                            document.getElementById("my-pics").scrollIntoView();
+                          }, 250);
+                    };
+    </script>
+
+
+<br><br>
+
+
+{%else%}
+
+<h2>This user's profile is set to private. Add them as a friend to view their pics and songs.</h2>
+
+{%endif%}
+
+
+{%else%}
+
+    <h2>You must be logged in to view this page.</h2>
+
+{%endif%}
+
+
+{%endblock%}

@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+
+{% block content%}
+
+{%if user.is_authenticated %}
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+<hr/>
+<h1>REPORT USER</h1>
+<hr/>
+                <br>
+                <br>
+
+                <form action="{%url 'report'%}" method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token%}
+
+                    {{form.as_p}}
+
+                    <button type="submit" class="btn btn-primary">Send</button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                </form>
+
+
+{%else%}
+
+    <h2>You must be logged in to view this page.</h2>
+
+{%endif%}
+
+
+{%endblock%}
