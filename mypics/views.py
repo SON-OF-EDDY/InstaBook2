@@ -5,11 +5,11 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
-from .forms import PictureForm,EditUserForm,PasswordChangeForm,PasswordForm,EditSettingsForm,SongForm,MessageForm,QueryForm,CritiqueForm,HelpForm
+from .forms import PictureForm,EditUserForm,PasswordChangeForm,PasswordForm,EditSettingsForm,SongForm,MessageForm,QueryForm,CritiqueForm,HelpForm,SignUpForm
 from .models import Picture,Profile,Song,Conversation,Help
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
-from .webscraping import find_weather,find_trending,most_watched,find_course
+from .webscraping import find_trending,most_watched,russian_youtube
 import datetime
 from django.http import JsonResponse
 import json
@@ -20,21 +20,10 @@ import json
 
 #??????     CURRENTLY WORKING ON  ????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-# figure out why the number of likes for some images is glitching up for production site....???
-
-# do conversations get deleted when a user is deleted on heroku app, need to check...
-
-# check everything is working for production, PC and mobile- at home...
-
-# can i get a better look/style to the website perhaps...
-
-
-# tell people to make accounts...
-
-
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #??????     CURRENTLY WORKING ON  ????????????
-# migrate app to that other webhosting place...// # russian webhosting
+# modify django register form a little...
+# page loading animation django
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
@@ -768,60 +757,22 @@ def my_recommendations(request,id):
 
 def home(request):
 
-    #webscraping stuff....
-
-    #current_location = find_location()
-
-    #current_country = current_location[0]
-    #current_city = current_location[1]
-
-    #current_time = datetime.datetime.today()
-
-    #current_weather = find_weather()
-
-    #current_temp = current_weather[0]
-
-    #location = current_weather[0]
-    #location = location.upper()+":"
-    #temperature = current_weather[1]
-    #weather_description = current_weather[2]
-    #pic = current_weather[3]
-
-    #course = find_course()
-
-    top_stories = find_trending()
-
-    top_videos = most_watched()
-
-    unique_embed_code_for_number_one_video = top_videos[0][1]
-    unique_embed_code_for_number_one_video = unique_embed_code_for_number_one_video.replace("https://www.youtube.com/watch?v=","")
-    unique_embed_code_for_number_one_video = "https://www.youtube.com/embed/"+ unique_embed_code_for_number_one_video
-
-    # ###############################################################
-    #profile, friend request stuff
-
     user = request.user
 
     if user.is_authenticated:
 
+        top_stories = find_trending()
+
+        embed_code = russian_youtube()
+
+        top_videos = most_watched()
+
         return render(request,'home.html',{
 
-
             'user':user,
-            #'current_city':current_city,
-            #'current_country':current_country,
-            #'current_time':current_time,
-            #'current_temp':current_temp,
-            #'location':location,
-            #'temperature':temperature,
-
-            #'weather_description':weather_description,
-            #'pic':pic,
-            #'course':course,
             'top_stories':top_stories,
             'top_videos':top_videos,
-            'unique_embed_code_for_number_one_video':unique_embed_code_for_number_one_video,
-
+            'unique_embed_code_for_number_one_video':'https://www.youtube.com/embed/'+embed_code
 
         })
 
@@ -959,7 +910,7 @@ def login_user(request):
 
         if user is not None:
 
-            messages.success(request, (f'Successfully logged in. Welcome back,{str(user).capitalize()}!'))
+            messages.success(request, (f'Successfully logged in. Welcome back, "{str(user).capitalize()}"!'))
             login(request, user)
             # change database entry here
             current_user = request.user
@@ -983,19 +934,19 @@ def logout_user(request):
     current_user_cap = str(current_user).capitalize()
 
     logout(request)
-    messages.success(request, (f'Successfully logged out. Bye,{current_user_cap}!'))
+    messages.success(request, (f'Successfully logged out. Bye, "{current_user_cap}"!'))
     current_user_id = current_user.profile.id
     current_profile = Profile.objects.get(pk=current_user_id)
     current_profile.online = False
     current_profile.save()
-    return redirect("home")
+    return redirect("login_user")
 
 
 def register(request):
 
     if request.method == 'POST':
 
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
 
         if form.is_valid():
 
@@ -1024,7 +975,7 @@ def register(request):
 
     else:
 
-        form = UserCreationForm()
+        form = SignUpForm()
 
         return render(request,'register.html',{
 

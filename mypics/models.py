@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import validate_comma_separated_integer_list
 from django.utils.html import mark_safe
+from cloudinary.models import CloudinaryField
 
 class Profile(models.Model):
 
@@ -21,7 +22,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.member)
-
 
 
 def get_default_action_status():
@@ -44,7 +44,7 @@ class Picture(models.Model):
     description = models.TextField(blank=True)
     picture_image = models.ImageField(null=True,blank=False,upload_to='images/')
     likes = models.CharField(max_length=120,default=0)
-    hearted = models.CharField(max_length=120, null=True,blank=True,default='',validators=[validate_comma_separated_integer_list])
+    hearted = models.CharField(max_length=120, null=True,blank=True,default="",validators=[validate_comma_separated_integer_list])
 
     #def __str__(self):
         #return self.title
@@ -62,7 +62,7 @@ class Song(models.Model):
 
     connected_user = models.ForeignKey(User, default=1, on_delete=models.CASCADE,related_name="+")
 
-    song_file = models.FileField(upload_to='songs/')
+    song_file = CloudinaryField(resource_type='video')
 
     def __str__(self):
         return self.title

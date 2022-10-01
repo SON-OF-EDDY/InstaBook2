@@ -15,6 +15,22 @@
   </script>
 
 
+<style>
+#no-friends {
+       color:#ffc008;
+    }
+
+    #no-friends:hover {
+       color: #ffc008;
+       text-decoration: underline;
+    }
+
+
+
+</style>
+
+
+
 {%if display %}
 <hr/>
 <h1>MY FRIENDS:</h1>
@@ -49,27 +65,27 @@
 
                     //$('#status'+'{{friend.id}}').empty();
 
-                    console.log('MEMBER: '+'{{friend.member.id}}');
+                    //console.log('MEMBER: '+'{{friend.member.id}}');
 
                     for (var key in response.all_profiles){
 
                         member_id = response.all_profiles[key].member_id;
-                        console.log(member_id);
+                       // console.log(member_id);
 
                         online = response.all_profiles[key].online;
-                        console.log(online);
+                        //console.log(online);
 
                         if ('{{friend.member.id}}' == member_id) {
-                            console.log('MATCH!');
+                            //console.log('MATCH!');
 
                             if (online === true) {
 
-                                document.getElementById('status'+{{friend.id}}).innerHTML = '<b>ONLINE</b>';
-                                document.getElementById('status'+{{friend.id}}).color = '00FF7F';
+                                document.getElementById('status'+{{friend.id}}).innerHTML = '<span><i class="fa-solid fa-user" style="color:#ffc008"></i>&nbspONLINE</span>';
+                                document.getElementById('status'+{{friend.id}}).color = 'black';
 
                             } else {
-                                document.getElementById('status'+{{friend.id}}).innerHTML = '<b>OFFLINE</b>';
-                                document.getElementById('status'+{{friend.id}}).color = 'red';
+                                document.getElementById('status'+{{friend.id}}).innerHTML = '<span><i class="fa-solid fa-user-xmark" style="color:#ffc008"></i>&nbspOFFLINE</span>';
+                                document.getElementById('status'+{{friend.id}}).color = 'black';
 
                             }
 
@@ -105,14 +121,12 @@
 
 
         <br><br>
-            <b>Profile Page:</b> <a  href="{% url 'my_profile' friend.member.id%}">{{friend.member.username}}'s page</a>
+            <b>To Profile Page</b> <a  href="{% url 'my_profile' friend.member.id%}"><span><i class="fa-solid fa-arrow-up-right-from-square fa-2x" style="color:#ffc008"></i></span></a>
             <br>
             <br>
 
 
-            <button type="button" class="btn btn-outline-danger
-
-        btn-sm" data-toggle="modal" data-target="#{{friend.id}}">
+            <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#{{friend.id}}">
                                     Delete Friend
                                           </button>
 
@@ -135,8 +149,7 @@
 
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
 
-                                                          <a  href="{%url 'delete_friend' friend.id%}" class="btn btn-outline-primary
-                                                              btn-sm">Yes</a>
+                                                          <a  href="{%url 'delete_friend' friend.id%}" class="btn btn-outline-warning">Yes</a>
 
                                                         </div>
                                         </div>
@@ -147,8 +160,7 @@
 
 
 
-            <a  href="{%url 'add_message' friend.id%}" class="btn btn-outline-primary
-                                      btn-sm">Send Message</a>
+            <a  href="{%url 'add_message' friend.id%}" class="btn btn-warning">Send Message</a>
 
 
             <br>
@@ -169,9 +181,9 @@
                       <div class="card-body">
 
 
-                          <p style="font-size:24px;" class="card-text"><h2>You currently have no friends!</h2>
+                          <p style="font-size:24px;" class="card-text"><h4>You currently have no friends!</h4>
     <br>
-<h2>Visit the <a href="{% url 'my_recommendations' user.id%}">MyRecommendations</a> page to add some new friends!!!</h2> </p>
+<h4>Visit the <a id ="no-friends" href="{% url 'my_recommendations' user.id%}">MyRecommendations</a> page to add some new friends!!!</h4> </p>
 
 
 

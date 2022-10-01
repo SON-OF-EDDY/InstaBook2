@@ -36,8 +36,7 @@
 <h4>Conversation Partner: <b>"{{conversation_partner_name}}"</b></h4>
 <br>
 
-<a  href="{%url 'delete_dialogue' conversation_partner_2 current_user_profile_id%}" class="btn btn-outline-danger
-                              btn-sm">Delete/Refresh Dialogue</a>
+<a  href="{%url 'delete_dialogue' conversation_partner_2 current_user_profile_id%}" class="btn btn-outline-warning">Delete/Refresh Dialogue</a>
 
 <br><br>
 
@@ -70,7 +69,7 @@
 {%csrf_token%}
     <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br>
     <input type="hidden" name="partner" id="partner" value="{{conversation_partner_2}}"><br>
-    <input class="btn btn-primary" type="submit" value="Send">
+    <input class="btn btn-warning" type="submit" value="Send">
 </form>
 
 <br>
@@ -116,7 +115,7 @@ $(document).on('submit','#post-form',function(e){
                 url:"{% url 'getConversations'%}",
                 success: function(response){
                     $('#display').empty();
-                    console.log(response);
+                    //console.log(response);
 
                     for (var key in response.conversations)
 

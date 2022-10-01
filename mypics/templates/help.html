@@ -7,8 +7,6 @@
 
 <hr/>
 <h1>HELP FROM ADMIN</h1>
-<br>
-<h2>DIALOGUE HISTORY:</h2>
 <hr/>
 <br>
 
@@ -45,7 +43,7 @@
 <form id="post-form" method="POST">
 {%csrf_token%}
     <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br><br>
-    <input class="btn btn-primary" type="submit" value="Send">
+    <input class="btn btn-warning" type="submit" value="Send">
 </form>
 
 
@@ -84,7 +82,7 @@ $(document).on('submit','#post-form',function(e){
                 url:"{% url 'getHelp'%}",
                 success: function(response){
                     $('#display').empty();
-                    console.log(response);
+                    //console.log(response);
 
                     for (var key in response.helps)
 

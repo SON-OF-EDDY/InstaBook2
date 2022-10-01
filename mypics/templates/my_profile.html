@@ -10,7 +10,6 @@
 
 </script>
 
-
 <style>
     img{
         cursor: pointer;
@@ -30,6 +29,25 @@
         cursor: pointer;
     }
 
+    #no-pics {
+       color:#ffc008;
+    }
+
+    #no-pics:hover {
+       color: #ffc008;
+       text-decoration: underline;
+    }
+
+
+     #no-songs {
+       color:#ffc008;
+    }
+
+    #no-songs:hover {
+       color: #ffc008;
+       text-decoration: underline;
+    }
+
 
 
 </style>
@@ -46,8 +64,6 @@
                  <h1>MY PROFILE PAGE</h1>
 <hr/>
 {%endif%}
-
-
 
 
 <div class="card mb-3" style="max-width: 540px;">
@@ -69,16 +85,16 @@
 
                         <p style="font-size:18px;" class="card-title">{{user_1.username}}</p>
                           <p style="font-size:24px;" class="card-text">{{user_1.first_name}}  {{user_1.last_name}}</p>
-                        <p style="font-size:14px;" class="card-text">
+                        <p style="font-size:16px;" class="card-text">
                             <small class="text-muted">
 
-                                <a href="{{user.profile.youtube_url}}">Youtube |</a>
+                                <a href="{{user.profile.youtube_url}}" style="color:black"><span><i class="fa-brands fa-youtube" style="color:#ffc008"></i></span><i>&nbspYoutube |</i></a>
 
 
-                                <a href="{{user.profile.telegram_url}}"> Telegram |</a>
+                                <a href="{{user.profile.telegram_url}}" style="color:black"><span><i class="fa-brands fa-telegram" style="color:#ffc008"></i></span><i>&nbspTelegram |</i></a>
 
 
-                                <a href="{{user.profile.vk_url}}"> VK</a>
+                                <a href="{{user.profile.vk_url}}" style="color:black"><span><i class="fa-brands fa-vk" style="color:#ffc008"></i></span><i>&nbspVK</i></a>
 
                         </small></p>
 
@@ -90,7 +106,7 @@
 
                           <br>
                           {%if user.email%}
-                          <p style="font-size:14px;" >Email: {{member_instance.email}}</p>
+                          <p style="font-size:14px;" ><b>Email:</b> {{user.email}}</p>
                             {%endif%}
                       </div>
                     </div>
@@ -104,7 +120,7 @@
     <div id ='profile-modal' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                    <h5 class="modal-title w-100" id="exampleModalLabel3" style="text-align:center">TITLE: "{{user_1.username}}"</h5>
+                    <h6 class="modal-title w-100" id="exampleModalLabel3" style="text-align:center">{{user_1.first_name}} {{user_1.last_name}}</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -171,7 +187,7 @@
         document.getElementById("profile-modal").style["max-width"] = `${to_log_1}px`;
 
         document.getElementById('profile-pic-1').width = to_log_2;
-        console.log('PC chosen pic');
+        //console.log('PC chosen pic');
 
         //document.getElementById('mobile-checker').innerHTML = 'PC';
 
@@ -201,7 +217,7 @@
 
 <br>
 
-<span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x"></i></span>
+<span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i></span>
 
 <br><br><h6><b>TO SONGS</b></h6>
 
@@ -257,7 +273,7 @@
                                 <div id = 'type{{entry.id}}' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header text-center">
-                                                <h5 class="modal-title w-100" id="exampleModalLabel2">TITLE: "{{entry.title}}"</h5>
+                                                <h6 class="modal-title w-100" id="exampleModalLabel2">"{{entry.title}}"</h6>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                   <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -358,7 +374,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                                                                                 <br>
 
 
-                                                                                <button id = 'show{{entry.id}}' type="button" class="btn btn-primary">SHOW LIKERS</button>
+                                                                                <button id = 'show{{entry.id}}' type="button" class="btn btn-warning">SHOW LIKERS</button>
 
                                                                                 <br>
 
@@ -456,8 +472,8 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                       <div class="card-body">
 
 
-                          <p style="font-size:24px;" class="card-text"><h3>You have no pics!</h3>
-        <h3>Visit the <a href="{% url 'add_pics'%}">MyPics</a> page to add some new pics!!!</h3></p>
+                          <p style="font-size:24px;" class="card-text"><h4>You have no pics!</h4>
+        <h4>Visit the <a id="no-pics" href="{% url 'add_pics'%}">MyPics</a> page to add some new pics!!!</h4></p>
 
 
 
@@ -521,12 +537,18 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
                                     if (response.pictures[key].hearted == null ) {
 
+                                        //console.log('hearted is NULL!');
                                         var hearted = [''];
+                                        var heartedarray = [''];
+                                        document.getElementById('p'+{{entry.id}}).innerHTML = '<br> No Likers';
+
+
 
 
 
                                     } else {
 
+                                        //console.log('entered also!!!');
                                         var final_string = '<br>';
                                         var hearted = response.pictures[key].hearted;
                                         var heartedarray = hearted.split(",");
@@ -572,6 +594,8 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                                             }
 
                                             final_string = final_string + '<br>';
+
+                                            //console.log(final_string);
 
 
                                             if (final_string == '<br><br>') {
@@ -622,9 +646,24 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
                                     }
+                                    // this is the end of the else
+                                    // so it doesn't know what hearted is next down there...
 
 
-                                    var heartedarray = hearted.split(",");
+                                    //console.log(heartedarray);
+
+
+                                    //if (response.pictures[key].hearted == null ) {
+
+                                        //console.log('hearted is NULL!');
+                                        //var hearted = [''];
+                                        //var heartedarray = hearted.split(",");
+                                        //console.log(heartedarray);
+                                    //else {
+                                        //var heartedarray = hearted.split(",");
+                                    //}
+
+
 
                                     var loggeduser = response.current_user;
 
@@ -864,7 +903,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
             {% csrf_token%}
           <input id ='song-input' name="song-input" class="form-control me-2" type="search" placeholder="Enter a song and/or artist..." aria-label="Search">
         <input type="hidden" name="user-id" id="user-id" value="{{user_1.username}}">
-        <input type="submit" class="btn btn-primary" value="Search" name="search-button" id="search-button">
+        <input type="submit" class="btn btn-warning" value="Search" name="search-button" id="search-button">
       </form>
 
 <br>
@@ -1016,10 +1055,9 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                       <div class="card-body">
 
 
-                          <p style="font-size:24px;" class="card-text"><h3>You have no songs!</h3>
-        <h3>Visit the <a href="{% url 'add_song'%}">MySongs</a> page to add some new songs!!!</h3>
+                          <p style="font-size:24px;" class="card-text"><h4>You have no songs!</h4>
+        <h4>Visit the <a id = "no-songs" href="{% url 'add_song'%}">MySongs</a> page to add some new songs!!!</h4>
     </p>
-
 
                       </div>
                     </div>
@@ -1305,7 +1343,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
 
-<span id='clickableAwesomeFont2'><i id='changing-icon2' class="fa-solid fa-circle-up fa-3x"></i></span>
+<span id='clickableAwesomeFont2'><i id='changing-icon2' class="fa-solid fa-circle-up fa-3x" style="color:#ffc008"></i></span>
 
 <br><br><h6><b>TO PICS</b></h6>
 

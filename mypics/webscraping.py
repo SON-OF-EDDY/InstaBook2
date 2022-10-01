@@ -1,5 +1,35 @@
 from bs4 import BeautifulSoup
 import requests
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+
+def russian_youtube():
+
+    chrome_options = Options()
+
+    chrome_options.add_argument("--headless")
+
+    driver = webdriver.Chrome(executable_path="C:\Program Files (x86)\chromedriver.exe", chrome_options=chrome_options)
+
+    driver.get('https://charts.youtube.com/charts/TrendingVideos/ru')
+
+    driver.implicitly_wait(1)
+
+    one = driver.find_element_by_xpath('//*[@id="1"]/div[2]/img')
+
+    src_url = one.get_attribute('endpoint')
+
+    src_url = src_url.replace('{"urlEndpoint":{"url":"', '')
+
+    src_url = src_url.replace('","target":"TARGET_NEW_WINDOW"}}', '')
+
+    embed_code = src_url.replace('https://www.youtube.com/watch?v=', '')
+
+    driver.close()
+
+    return embed_code
 
 def find_course():
 
@@ -83,7 +113,7 @@ def find_trending():
 
 def most_watched():
 
-    my_url = 'https://kworb.net/youtube/'
+    my_url = 'https://kworb.net/youtube/realtime_anglo.html'
 
     result = requests.get(my_url)
 

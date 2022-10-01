@@ -2,6 +2,11 @@
 
 {% block content%}
 
+<hr/>
+<h1>Login</h1>
+<hr/>
+<br>
+
 <form action="" method=POST>
 
     {%csrf_token%}
@@ -15,8 +20,8 @@
     <label for="exampleInputPassword1" class="form-label">Password</label>
     <input type="password" class="form-control" name="password">
   </div>
-
-  <button type="submit" class="btn btn-primary">Submit</button>
+<br>
+  <button type="submit" class="btn btn-warning">Submit</button>
 
 </form>
 

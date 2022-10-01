@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm,PasswordChangeForm
 from django.contrib.auth.models import User
@@ -122,6 +123,13 @@ class PasswordForm(PasswordChangeForm):
     class Meta:
 
         fields = ('old_password','new_password1','new_password2')
+
+
+class SignUpForm(UserCreationForm):
+
+    username = forms.CharField(max_length=120,widget=forms.TextInput(attrs={'class':'form-control'}))
+    password1 = forms.CharField(max_length=120,label='Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    password2 = forms.CharField(max_length=120,label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
 
 
 class MessageForm(ModelForm):

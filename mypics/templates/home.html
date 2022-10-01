@@ -4,9 +4,30 @@
 {% block content%}
 {%if user.is_authenticated%}
 
+
+
 <style>
+
     img{
         cursor: pointer;
+    }
+
+    #video-1 {
+       color:black;
+    }
+
+    #video-1:hover {
+       color: #ffc008;
+    }
+
+
+    #news-1 {
+       color: black;
+
+    }
+
+    #news-1:hover {
+       color: #ffc008;
     }
 
 </style>
@@ -17,7 +38,7 @@
 <h1>HOMEPAGE</h1>
 <hr/>
 
-<br>
+<br><br>
 
     <div class="card mb-3" style="max-width: 540px;">
                   <div class="row g-0">
@@ -36,7 +57,7 @@
                                 <div id = 'modal-box' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header text-center">
-                                                <h5 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">PROFILE PICTURE</h5>
+                                                <h6 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">{{user.first_name}} {{user.last_name}}</h6>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                   <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -132,15 +153,15 @@
 
                         <p style="font-size:18px;" class="card-title">{{user.username}}</p>
                           <p style="font-size:24px;" class="card-text">{{user.first_name}}  {{user.last_name}}</p>
-                        <p style="font-size:14px;" class="card-text"><small class="text-muted">
+                        <p style="font-size:16px;" class="card-text"><small class="text-muted">
                             {%if user.profile.youtube_url%}
-                                <a href="{{user.profile.youtube_url}}">Youtube |</a>
+                                <a href="{{user.profile.youtube_url}}" style="color:black"><span><i class="fa-brands fa-youtube" style="color:#ffc008"></i></span><i>&nbspYoutube |</i></a>
                             {%endif%}
                             {%if user.profile.telegram_url%}
-                                <a href="{{user.profile.telegram_url}}"> Telegram |</a>
+                                <a href="{{user.profile.telegram_url}}" style="color:black"><span><i class="fa-brands fa-telegram" style="color:#ffc008"></i></span><i>&nbspTelegram |</i></a>
                             {%endif%}
                             {%if user.profile.vk_url%}
-                                <a href="{{user.profile.vk_url}}"> VK</a>
+                                <a href="{{user.profile.vk_url}}" style="color:black"><span><i class="fa-brands fa-vk" style="color:#ffc008"></i></span><i>&nbspVK</i></a>
                             {%endif%}
                         </small></p>
 
@@ -152,40 +173,65 @@
 
                           <br>
                           {%if user.email%}
-                          <p style="font-size:14px;" >Email: {{user.email}}</p>
+                          <p style="font-size:14px;" ><b>Email:</b> {{user.email}}</p>
                             {%endif%}
                       </div>
                     </div>
                   </div>
                 </div>
 
-    <br>
+    <br><br>
 
 <hr/>
 
 <h5>TRENDING MUSIC VIDEOS:</h5>
 
 
-
-    <br>
-    <iframe id ='youtube-video' width="560" height="315" src="{{unique_embed_code_for_number_one_video}}"></iframe>
-<br>
-        <br>
-
+<br><br>
 <div class="card mb-3" style="max-width: 540px;">
                   <div class="row g-0">
 
 <div class="col-md-8">
+
+
                       <div class="card-body">
 
-                          <p style="font-size:18px;" class="card-title"><b>TOP 5:</b></p>
+
+
+                          <br>
+    <h5>TOP IN RUSSIA:</h5>
+<br>
+    <iframe id ='youtube-video' width="505" height="315" src="{{unique_embed_code_for_number_one_video}}"></iframe>
+<br>
+
+
+        <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <br>
+    <h5>TOP 5 IN ENGLISH:</h5>
+<br>
+
                           <br>
 
 
                           <ol type="1">
 
         {%for entry in top_videos%}
-        <li><a href="{{entry.1}}">{{entry.0}}</a></li>
+        <li><a id = "video-1" href="{{entry.1}}">{{entry.0}}</a></li>
                               <br>
     {%endfor%}
     </ol>
@@ -196,7 +242,6 @@
                     </div>
                   </div>
                 </div>
-
 
     <br>
     <br>
@@ -233,11 +278,10 @@
 
     } else {
 
-        var to_log_1 = (screen.availWidth * 0.33) ;
+        var to_log_1 = '505';
         document.getElementById('youtube-video').width = to_log_1;
-        //document.getElementById('profile-pic').width = to_log_1;
         document.getElementById('modal-box').className = 'modal-dialog modal-lg';
-        //document.getElementById('mobile-checker').innerHTML = 'PC';
+
 
         if (!('{{user.profile.profile_pic}}' == '')) {
             document.getElementById('profile-pic').width = to_log_1;
@@ -250,8 +294,8 @@
 
 <hr/>
 
-<h5>TOP NEWS STORIES:</h5>
-<br>
+<h5>LATEST NEWS STORIES:</h5>
+<br><br>
 
 
 <div class="card mb-3" style="max-width: 540px;">
@@ -260,14 +304,15 @@
 <div class="col-md-8">
                       <div class="card-body">
 
-                          <p style="font-size:18px;" class="card-title"><b>TOP 5:</b></p>
                           <br>
+    <h5>TOP 5:</h5>
+<br>
 
 
                           <ol>
 
     {%for entry in top_stories%}
-        <li><a href="{{entry.1}}">{{entry.0}}</a></li>
+        <li><a id ="news-1" href="{{entry.1}}">{{entry.0}}</a></li>
                               <br>
     {%endfor%}
 

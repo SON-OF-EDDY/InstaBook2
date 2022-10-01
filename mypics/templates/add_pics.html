@@ -27,7 +27,7 @@
 <br>
 
                  <br>
-                <span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x"></i>
+                <span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i>
                 </span>
 
                 <br><br><h6><b>ADD PIC</b></h6>
@@ -99,8 +99,7 @@
 
                               <br><br>
 
-                                   <button type="button" class="btn btn-outline-danger
-                              btn-sm" data-toggle="modal" data-target="#{{entry.id}}">
+                                   <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#{{entry.id}}">
                             Delete Image
                                   </button>
                                   <br><br>
@@ -122,8 +121,7 @@
 
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
 
-                                                  <a  href="{%url 'delete_pic' entry.id%}" class="btn btn-outline-primary
-                                                      btn-sm">Yes</a>
+                                                  <a  href="{%url 'delete_pic' entry.id%}" class="btn btn-outline-warning">Yes</a>
 
                                                 </div>
                                 </div>
@@ -135,7 +133,7 @@
                                 <div id = 'type{{entry.id}}' class="modal-dialog modal-dialog-centered" style="max-width: 135px" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header text-center">
-                                                <h5 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">TITLE: "{{entry.title}}"</h5>
+                                                <h6 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">"{{entry.title}}"</h6>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                   <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -209,8 +207,7 @@
 
                             </script>
 
-                          <a  href="{%url 'edit_pic' entry.id%}" class="btn btn-outline-primary
-                          btn-sm">Edit image</a>
+                          <a  href="{%url 'edit_pic' entry.id%}" class="btn btn-warning">Edit image</a>
 
 
 
@@ -242,7 +239,7 @@
                       <div class="card-body">
 
 
-                          <p style="font-size:24px;" class="card-text"><h3>You have no saved images!</h3></p>
+                          <p style="font-size:24px;" class="card-text"><h4>You have no saved images!</h4></p>
 
 
 
@@ -273,8 +270,9 @@
                     {% csrf_token%}
 
                     {{form.as_p}}
+                    <button type="submit" class="btn btn-warning">Add</button>
 
-                    <button type="submit" class="btn btn-primary">Add</button>
+
                     <br>
                     <br>
                     <br>

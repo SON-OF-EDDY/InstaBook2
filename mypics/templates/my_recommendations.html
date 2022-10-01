@@ -4,6 +4,7 @@
 
 {%if user.is_authenticated %}
 
+
 {%if display %}
 
 {%if final_list%}
@@ -42,33 +43,29 @@
 
                               <td style="word-break:break-word;">
 
-                                  <a  href="{% url 'my_profile' profile.member.id%}" class="btn btn-primary
-                              btn-sm">View Profile Page</a>
+                                  <a  href="{% url 'my_profile' profile.member.id%}" class="btn btn-warning">View Profile Page</a>
 
                                   <br><br>
 
                                   {%if profile.id in list_people_who_already_sent_you_requests%}
 
-                                    <h6>This person has already <br> sent you a request!</h6>
+                                    <h6><i>This person has already sent you a request!</i></h6>
 
                                   <br><br>
 
-                                    <a  href="{% url 'accept' profile.id url_id%}" class="btn btn-success
-                                        btn-sm">Accept</a>
+                                    <a  href="{% url 'accept' profile.id url_id%}" class="btn btn-warning">Accept</a>
 
                                   <br><br>
 
-                                  <a  href="{%url 'decline' profile.id url_id%}" class="btn btn-danger
-                                        btn-sm">Decline</a>
+                                  <a  href="{%url 'decline' profile.id url_id%}" class="btn btn-warning">Decline</a>
 
                                   {%elif profile.id not in list_requests_sent%}
 
-                                  <a  href="{%url 'send_request' profile.id url_id_b%}" class="btn btn-dark
-                                        btn-sm">Send Friend Request</a>
+                                  <a  href="{%url 'send_request' profile.id url_id_b%}" class="btn btn-outline-warning">Send Friend Request</a>
 
                                         {%else%}
 
-                                      <h6>Friend Request Sent!</h6>
+                                      <h6><i>Friend Request Sent!</i></h6>
 
                                       {%endif%}
 
