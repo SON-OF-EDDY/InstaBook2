@@ -1,27 +1,20 @@
+import os
+
 from bs4 import BeautifulSoup
 import requests
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-
-
 def russian_youtube():
-
-
-    GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-    CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-
 
     chrome_options = Options()
 
-    chrome_options.binary_location = GOOGLE_CHROME_PATH
+    chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
 
     chrome_options.add_argument("--headless")
 
-    driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path=str(os.environ.get('CHROMEDRIVER_PATH')), chrome_options=chrome_options)
 
     driver.get('https://charts.youtube.com/charts/TrendingVideos/ru')
 
