@@ -185,34 +185,36 @@
                                 } else {
 
                                     var to_log_1 = (screen.availWidth * 0.5) ;
-                                    //console.log('screen available:'+to_log_1);
+                                    console.log('screen available:'+to_log_1);
 
                                     var actual_width = document.getElementById('resize'+{{entry.id}}).naturalWidth;
                                     var width = document.getElementById('resize'+{{entry.id}}).width;
-                                    //console.log('native width image:'+actual_width);
-                                    //console.log('width of image 1:'+width);
+                                    console.log('native width image:'+actual_width);
+                                    console.log('width of image 1:'+width);
 
                                     // just use a hacky solution here lol...
                                     // what matters is that it just works lol...
 
                                     if (actual_width == 0) {
-                                        //console.log('first if statement entered');
+                                        console.log('first if statement entered');
                                         actual_width = width;
-                                        //console.log('width of image 2:'+actual_width);
+                                        console.log('width of image 2:'+actual_width);
+                                        var to_log_2 = to_log_1 * 0.9;
 
                                     } else {
 
                                         if (actual_width > (to_log_1 * 0.9)) {
-                                            //console.log('second if statement entered');
+                                            console.log('second if statement entered');
                                             var to_log_2 = to_log_1 * 0.9;
 
                                         } else {
-                                            //console.log('third if statement entered');
+                                            console.log('third if statement entered');
                                             var to_log_2 = actual_width;
                                         }
 
 
                                     }
+
 
                                     console.log('final display image:'+to_log_2);
 
