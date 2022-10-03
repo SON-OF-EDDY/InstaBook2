@@ -69,7 +69,7 @@
 {%csrf_token%}
     <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br>
     <input type="hidden" name="partner" id="partner" value="{{conversation_partner_2}}"><br>
-    <input class="btn btn-warning" type="submit" value="Send">
+    <input id ='send-button' class="btn btn-warning" type="submit" value="Send">
 </form>
 
 <br>
@@ -148,6 +148,20 @@ $(document).on('submit','#post-form',function(e){
 
    });
 
+</script>
+
+<script>
+    document.getElementById('send-button').onclick = function() {
+
+                        setTimeout(function(){
+ 	                        //console.log('button clicked');
+                            var box = document.getElementById('message');
+                            //console.log('value is:'+box.value);
+                            box.value = '';
+                            //console.log('value is:'+box.value);
+                        }, 50);
+
+                    };
 </script>
 
 

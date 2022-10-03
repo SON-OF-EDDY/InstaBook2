@@ -11,7 +11,6 @@
 <br>
 
 
-
 <div class="card mb-3" style="max-width: 540px;">
                   <div class="row g-0">
 
@@ -43,9 +42,8 @@
 <form id="post-form" method="POST">
 {%csrf_token%}
     <textarea style="max-width: 540px;" class="form-control" name="message" id="message"  placeholder="Type a message"></textarea><br><br>
-    <input class="btn btn-warning" type="submit" value="Send">
+    <input id ='send-button' class="btn btn-warning" type="submit" value="Send">
 </form>
-
 
 <script>
 $(document).on('submit','#post-form',function(e){
@@ -61,7 +59,10 @@ $(document).on('submit','#post-form',function(e){
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
         },
         success: function(data){
-            alert(data);
+            //var box = document.getElementById('message');
+
+            //console.log(box.value);
+
         }
     });
 });
@@ -82,6 +83,7 @@ $(document).on('submit','#post-form',function(e){
                 url:"{% url 'getHelp'%}",
                 success: function(response){
                     $('#display').empty();
+
                     //console.log(response);
 
                     for (var key in response.helps)
@@ -93,6 +95,8 @@ $(document).on('submit','#post-form',function(e){
                             var temp = response.helps[key].dialogue;
 
                             document.getElementById('display').innerText = temp
+
+
 
                         }
 
@@ -108,9 +112,19 @@ $(document).on('submit','#post-form',function(e){
 </script>
 
 
+<script>
+    document.getElementById('send-button').onclick = function() {
 
+                        setTimeout(function(){
+ 	                        //console.log('button clicked');
+                            var box = document.getElementById('message');
+                            //console.log('value is:'+box.value);
+                            box.value = '';
+                            //console.log('value is:'+box.value);
+                        }, 50);
 
-
+                    };
+</script>
 
 
 

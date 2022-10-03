@@ -174,35 +174,61 @@
                                 if (detectMob()) {
 
                                     var to_log_1 = screen.availWidth * 0.95;
+
                                     var to_log_2 = to_log_1 * 0.9;
 
                                     document.getElementById('resize'+{{entry.id}}).width = to_log_2;
                                     document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
-
 
                                     //document.getElementById('mobile-checker').innerHTML = 'Mobile';
 
                                 } else {
 
                                     var to_log_1 = (screen.availWidth * 0.5) ;
+                                    //console.log('screen available:'+to_log_1);
 
                                     var actual_width = document.getElementById('resize'+{{entry.id}}).naturalWidth;
+                                    var width = document.getElementById('resize'+{{entry.id}}).width;
+                                    //console.log('native width image:'+actual_width);
+                                    //console.log('width of image 1:'+width);
 
-                                    if (actual_width > (to_log_1 * 0.9)) {
-                                        var to_log_2 = to_log_1 * 0.9;
+                                    // just use a hacky solution here lol...
+                                    // what matters is that it just works lol...
+
+                                    if (actual_width == 0) {
+                                        //console.log('first if statement entered');
+                                        actual_width = width;
+                                        //console.log('width of image 2:'+actual_width);
 
                                     } else {
-                                        var to_log_2 = actual_width;
+
+                                        if (actual_width > (to_log_1 * 0.9)) {
+                                            //console.log('second if statement entered');
+                                            var to_log_2 = to_log_1 * 0.9;
+
+                                        } else {
+                                            //console.log('third if statement entered');
+                                            var to_log_2 = actual_width;
+                                        }
+
+
                                     }
 
+                                    console.log('final display image:'+to_log_2);
 
                                     document.getElementById('resize'+{{entry.id}}).width = to_log_2;
                                     document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
 
                                     //document.getElementById('mobile-checker').innerHTML = 'PC';
 
+                                    console.log('##########################');
+
 
                                 }
+
+
+
+
 
 
                             </script>
@@ -270,7 +296,7 @@
                     {% csrf_token%}
 
                     {{form.as_p}}
-                    <button type="submit" class="btn btn-warning">Add</button>
+                    <button id='send-button' type="submit" class="btn btn-warning">Add</button>
 
 
                     <br>

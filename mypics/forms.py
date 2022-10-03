@@ -116,9 +116,9 @@ class EditSettingsForm(ModelForm):
 
 class PasswordForm(PasswordChangeForm):
 
-    old_password = forms.CharField(max_length=120,widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
-    new_password1 = forms.CharField(max_length=120,widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
-    new_password2 = forms.CharField(max_length=120,widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    old_password = forms.CharField(max_length=120,label='Old Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    new_password1 = forms.CharField(max_length=120,label='New Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    new_password2 = forms.CharField(max_length=120,label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
 
     class Meta:
 
