@@ -6,7 +6,7 @@
     {%if user.is_authenticated %}
 
 
-    <div id="mobile-checker"></div>
+
 
     <style>
     img{
@@ -15,22 +15,71 @@
 
     #clickableAwesomeFont {
         cursor: pointer;
+    }
+
+    #to-top {
+        cursor: pointer;
+        position: fixed;
+        right: 2.5%;
 
 
     }
 
+
+
     </style>
+
+
 
 <hr/>
                 <h1>MY PICS</h1>
 <hr/>
+
 <br>
 
                  <br>
                 <span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i>
+                </span><span id='to-top'><i id = 'changing-icon2' class="fa-solid fa-circle-up fa-3x" style="color:#ffc008"></i>
                 </span>
 
+
+                <script>
+
+                    function animate_icon2() {
+
+                          var icon = document.getElementById('changing-icon2');
+
+                          // change to 2
+                          setTimeout(function () {
+                            //console.log('stage 2');
+                            icon.className = "fa-regular fa-circle-up fa-3x";
+                          }, 125);
+
+                          //back to 1
+                          setTimeout(function () {
+                          //console.log('back to 1');
+                            icon.className = "fa-solid fa-circle-up fa-3x";
+                          }, 250);
+
+                     }
+
+                    document.getElementById('to-top').onclick = function() {
+                        animate_icon2();
+                        setTimeout(function () {
+                            window.scrollTo(0, 0);
+                          }, 250);
+                    };
+</script>
+
+
+
+
+
                 <br><br><h6><b>ADD PIC</b></h6>
+
+
+
+
 
                 <script>
 
@@ -279,6 +328,12 @@
                     <br>
 
                 </form>
+
+
+
+
+
+</script>
 
 {%else%}
     <h2>You must be logged in to view this page.</h2>
