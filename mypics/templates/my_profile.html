@@ -3,7 +3,7 @@
 
 {% block content%}
 {%if user.is_authenticated%}
-{%if display %}
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div id="mobile-checker"></div>
 
@@ -1396,12 +1396,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
 
-{% else %}
 
-<h2>You don't have authorisation to view this page.</h2>
-
-
-{% endif %}
 
 
 
