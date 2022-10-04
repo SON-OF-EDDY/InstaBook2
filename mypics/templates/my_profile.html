@@ -3,6 +3,7 @@
 
 {% block content%}
 {%if user.is_authenticated%}
+{%if display %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div id="mobile-checker"></div>
 
@@ -444,7 +445,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                   <div class="row g-0">
 
 
-<div class="col-md-8">
+
                       <div class="card-body">
 
 
@@ -453,7 +454,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
                       </div>
-                    </div>
+
                   </div>
                 </div>
 
@@ -467,7 +468,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                   <div class="row g-0">
 
 
-<div class="col-md-8">
+
                       <div class="card-body">
 
 
@@ -477,7 +478,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
                       </div>
-                    </div>
+
                   </div>
                 </div>
 
@@ -1022,7 +1023,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                   <div class="row g-0">
 
 
-<div class="col-md-8">
+
                       <div class="card-body">
 
 
@@ -1031,7 +1032,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
                       </div>
-                    </div>
+
                   </div>
                 </div>
 
@@ -1045,7 +1046,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                   <div class="row g-0">
 
 
-<div class="col-md-8">
+
                       <div class="card-body">
 
 
@@ -1054,7 +1055,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
     </p>
 
                       </div>
-                    </div>
+
                   </div>
                 </div>
 
@@ -1377,29 +1378,32 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                   <div class="row g-0">
 
 
-<div class="col-md-8">
+
                       <div class="card-body">
 
 
-                          <p style="font-size:24px;" class="card-text"><h2>This user's profile is set to private. Add them as a friend to view their pics and songs.</h2></p>
+                          <p style="font-size:24px;" class="card-text"><h2 style="font-size:24px;">This user's profile is set to private. Add them as a friend to view their pics and songs.</h2></p>
 
 
 
                       </div>
-                    </div>
+
                   </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
 {%endif%}
+
+
+
+
+{% else %}
+
+<h2>You don't have authorisation to view this page.</h2>
+
+
+{% endif %}
+
+
 
 
 {%else%}

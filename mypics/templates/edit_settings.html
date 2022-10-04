@@ -3,7 +3,9 @@
 {% block content%}
 
 {%if user.is_authenticated %}
+{%if display %}
 <hr/>
+
         <h1>EDIT OTHER PROFILE SETTINGS</h1>
 <hr/>
                         <br>
@@ -19,6 +21,19 @@
         </form>
         <br>
                             <br>
+
+
+{% else %}
+
+<h2>You don't have authorisation to view this page.</h2>
+
+
+{% endif %}
+
+
+
+
+
         {%else%}
 
 <h2>You must be logged in to view this page.</h2>

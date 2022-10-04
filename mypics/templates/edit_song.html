@@ -3,6 +3,7 @@
 {% block content%}
 
 {%if user.is_authenticated %}
+{%if display %}
 
 <h1>EDIT SONG DETAILS</h1>
                 <br>
@@ -17,7 +18,12 @@
 </form>
 <br>
                     <br>
+{% else %}
 
+<h2>You don't have authorisation to view this page.</h2>
+
+
+{% endif %}
 
 {%else%}
     <h2>You must be logged in to view this page.</h2>

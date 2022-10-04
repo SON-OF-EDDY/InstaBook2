@@ -127,7 +127,7 @@ class PasswordForm(PasswordChangeForm):
 
 class SignUpForm(UserCreationForm):
 
-    username = forms.CharField(max_length=120,widget=forms.TextInput(attrs={'class':'form-control'}))
+    username = forms.CharField(max_length=120,label='Username',widget=forms.TextInput(attrs={'class':'form-control'}))
     password1 = forms.CharField(max_length=120,label='Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
     password2 = forms.CharField(max_length=120,label='Confirm Password',widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
 

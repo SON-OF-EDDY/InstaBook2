@@ -3,6 +3,7 @@
 {% block content%}
 
 {%if user.is_authenticated %}
+{%if display %}
 <hr/>
         <h1>CHANGE USERNAME AND PASSWORD</h1>
 <hr/>
@@ -19,6 +20,20 @@
         </form>
         <br>
                             <br>
+
+
+{% else %}
+
+<h2>You don't have authorisation to view this page.</h2>
+
+
+{% endif %}
+
+
+
+
+
+
 
 {%else%}
 

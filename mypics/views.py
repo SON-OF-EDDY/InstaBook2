@@ -20,11 +20,8 @@ import json
 
 #??????     CURRENTLY WORKING ON  ????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-# check changes so far...
-
-# Upon adding new pics it takes a page refresh for them to be visible in modals...
-
-
+# on mobile slightly improve position of video...
+# make a logo for my app like in google chrome views...
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #??????     CURRENTLY WORKING ON  ????????????
 
@@ -38,17 +35,10 @@ import json
 
 
 
-# Some issue now when deleting accounts... (like if they have no pics or something...)
 
-# text in textboxes for PC version not occupying the whole length of the textbox...
 
-# on mobile slightly improve position of video...
+# extensive testing with new accounts etc etc etc... who knows what mistakes i might find lol....
 
-# UserName somewhere, but should be User Name... (CAN'T FIND IT...)
-
-# conversation box has the words sometimes cut off on the mobile version...
-
-#make a logo for my app like in google chrome views...
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
@@ -57,7 +47,6 @@ import json
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 
 #%%%%%%%    STYLE AND LATER      %%%%%%%%%
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -328,7 +317,7 @@ def delete_account(request,user_id):
 
     for pic in all_pics:
 
-        if pic.hearted != '':
+        if pic.hearted != '' and pic.hearted != None:
 
             if len(pic.hearted) > 2:
 
@@ -806,6 +795,17 @@ def home(request):
 
 def my_profile(request,id):
 
+
+
+    logged_in_user_id = request.user.id
+
+    if int(id) == logged_in_user_id:
+        display = True
+    else:
+        display = False
+
+
+
     pics_show = False
 
     songs_show = False
@@ -917,7 +917,8 @@ def my_profile(request,id):
         'logged_on_user':logged_on_user,
         'list_whose_hearted_for_each_pic':list_whose_hearted_for_each_pic,
         'logged_on_user_formatted':logged_on_user_formatted,
-        'text': 'simon\njohn\nemily'
+        'text': 'simon\njohn\nemily',
+        'display': display,
 
 
 
@@ -1011,6 +1012,15 @@ def register(request):
 
 def edit_profile(request,id):
 
+    logged_in_user_id = request.user.id
+
+    if int(id) == logged_in_user_id:
+        display = True
+    else:
+        display = False
+
+
+
     user_profile = User.objects.get(pk=id)
 
     entries = Picture.objects.all()
@@ -1044,6 +1054,7 @@ def edit_profile(request,id):
             return render(request, 'edit_profile.html', {
 
                 'form': form,
+                'display': display,
 
             })
 
@@ -1059,6 +1070,7 @@ def edit_profile(request,id):
             'form': form,
             'username':username,
             'entries':entries,
+            'display': display,
 
         })
 
@@ -1276,7 +1288,17 @@ def delete_friend(request,friend_id):
 
 def edit_pic(request,pic_id):
 
+    logged_in_user_id = str(request.user.username).lower()
+
     pic = Picture.objects.get(pk=pic_id)
+
+    pic_author = str(pic.author).lower()
+
+    if pic_author == logged_in_user_id:
+        display = True
+    else:
+        display = False
+
     form = PictureForm(request.POST or None,request.FILES or None,instance=pic)
 
     if form.is_valid():
@@ -1291,12 +1313,29 @@ def edit_pic(request,pic_id):
     return render(request,'edit_pic.html',{
 
         'form':form,
+        'display': display,
     })
 
 
 def edit_song(request,song_id):
 
+    logged_in_user_id = str(request.user.username).lower()
+
+    #if the song instance author is the same as the name of the logged in user all is good...
+
+
+
     song = Song.objects.get(pk=song_id)
+
+    song_author = str(song.author).lower()
+
+    if song_author == logged_in_user_id:
+        display = True
+    else:
+        display = False
+
+
+
     form = SongForm(request.POST or None,request.FILES or None,instance=song)
 
     if form.is_valid():
@@ -1311,6 +1350,7 @@ def edit_song(request,song_id):
     return render(request,'edit_song.html',{
 
         'form':form,
+        'display':display,
     })
 
 def add_song(request):
@@ -1426,6 +1466,13 @@ def password(request):
 
 def edit_settings(request,id):
 
+    logged_in_user_id = request.user.id
+
+    if int(id) == logged_in_user_id:
+        display = True
+    else:
+        display = False
+
     user_profile = User.objects.get(pk=id)
 
     member_id_from_user = user_profile.profile.id
@@ -1450,6 +1497,7 @@ def edit_settings(request,id):
             return render(request, 'edit_settings.html', {
 
                 'form': form,
+                'display':display,
 
             })
 
@@ -1460,6 +1508,7 @@ def edit_settings(request,id):
         return render(request, 'edit_settings.html', {
 
             'form':form,
+            'display': display,
 
         })
 
@@ -1506,6 +1555,7 @@ def add_friend(request,id):
             'final_list':final_list,
 
 
+
         })
 
     else:
@@ -1524,6 +1574,24 @@ def add_friend(request,id):
 
 
 def add_message(request,conversation_partner_2):
+
+    # if conversation partner 2 is in your friends list then it should be allowed...
+
+    logged_in_user_id = request.user.profile.id
+
+    profile_of_user = Profile.objects.get(pk=logged_in_user_id)
+
+    friends_of_user = profile_of_user.friend_id_list
+
+    if friends_of_user != [] and friends_of_user != None:
+
+        if conversation_partner_2 in friends_of_user:
+            display = True
+        else:
+            display = False
+
+    else:
+        display = False
 
     current_user = request.user
 
@@ -1576,6 +1644,7 @@ def add_message(request,conversation_partner_2):
         'current_user_name':current_user_name,
         'partner_profile':partner_profile,
         'current_user_profile_id':current_user_profile_id,
+        'display': display,
 
 
     })
