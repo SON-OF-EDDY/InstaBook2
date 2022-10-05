@@ -38,65 +38,65 @@ def russian_youtube():
 
     return embed_code
 
-def find_course():
+# def find_course():
+#
+#     my_url = 'https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=RUB'
+#
+#     result = requests.get(my_url)
+#
+#     soup = BeautifulSoup(result.text, 'html.parser')
+#
+#     output = soup.find("p", class_="result__BigRate-sc-1bsijpp-1 iGrAod")
+#
+#     if output != None:
+#         output = output.text
+#     else:
+#         output = 'Not Found'
+#
+#     return output
 
-    my_url = 'https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=RUB'
 
-    result = requests.get(my_url)
-
-    soup = BeautifulSoup(result.text, 'html.parser')
-
-    output = soup.find("p", class_="result__BigRate-sc-1bsijpp-1 iGrAod")
-
-    if output != None:
-        output = output.text
-    else:
-        output = 'Not Found'
-
-    return output
-
-
-def find_weather():
-
-    my_url = 'https://www.tomorrow.io/weather/'
-
-    result = requests.get(my_url)
-
-    soup = BeautifulSoup(result.text, 'html.parser')
-
-    # location_box = str(soup.find("h1", class_="PFnzkD"))
-
-    location = (soup.find("h1", class_="PFnzkD")).string
-
-    temperature = (soup.find("div", class_="_9oCDP5 DsY3vz")).string
-
-    weather_description = (soup.find("div", class_="TMYuez")).string
-
-    weather_description = weather_description.lower()
-
-    icon_dictionary = {
-
-        'mostly cloudy':'<i class="fa-solid fa-cloud fa-3x"></i>',
-        'partly cloudy':'<i class="fa-solid fa-cloud fa-3x"></i>',
-        'cloudy': '<i class="fa-solid fa-cloud fa-3x"></i>',
-
-        'clear': '<i class="fa-solid fa-sun fa-3x"></i>',
-        'mostly clear': '<i class="fa-solid fa-sun fa-3x"></i>',
-
-        'light rain': '<i class="fa-solid fa-cloud-rain fa-3x"></i>',
-        'drizzle': '<i class="fa-solid fa-cloud-rain fa-3x"></i>',
-        'rainy': '<i class="fa-solid fa-cloud-showers-heavy fa-3x"></i>',
-
-                       }
-
-    if weather_description in icon_dictionary.keys():
-        pic = icon_dictionary[weather_description]
-    else:
-        pic = ''
-
-    output = [location, temperature, weather_description,pic]
-
-    return output
+# def find_weather():
+#
+#     my_url = 'https://www.tomorrow.io/weather/'
+#
+#     result = requests.get(my_url)
+#
+#     soup = BeautifulSoup(result.text, 'html.parser')
+#
+#     # location_box = str(soup.find("h1", class_="PFnzkD"))
+#
+#     location = (soup.find("h1", class_="PFnzkD")).string
+#
+#     temperature = (soup.find("div", class_="_9oCDP5 DsY3vz")).string
+#
+#     weather_description = (soup.find("div", class_="TMYuez")).string
+#
+#     weather_description = weather_description.lower()
+#
+#     icon_dictionary = {
+#
+#         'mostly cloudy':'<i class="fa-solid fa-cloud fa-3x"></i>',
+#         'partly cloudy':'<i class="fa-solid fa-cloud fa-3x"></i>',
+#         'cloudy': '<i class="fa-solid fa-cloud fa-3x"></i>',
+#
+#         'clear': '<i class="fa-solid fa-sun fa-3x"></i>',
+#         'mostly clear': '<i class="fa-solid fa-sun fa-3x"></i>',
+#
+#         'light rain': '<i class="fa-solid fa-cloud-rain fa-3x"></i>',
+#         'drizzle': '<i class="fa-solid fa-cloud-rain fa-3x"></i>',
+#         'rainy': '<i class="fa-solid fa-cloud-showers-heavy fa-3x"></i>',
+#
+#                        }
+#
+#     if weather_description in icon_dictionary.keys():
+#         pic = icon_dictionary[weather_description]
+#     else:
+#         pic = ''
+#
+#     output = [location, temperature, weather_description,pic]
+#
+#     return output
 
 
 def find_trending():
