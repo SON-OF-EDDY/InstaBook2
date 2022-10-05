@@ -1082,7 +1082,7 @@ def add_pics(request):
 
             post = form.save(commit=False)
             post.author = str(request.user).lower()
-            post.connected_user = User.objects.get(username=str(request.user).lower())
+            post.connected_user = User.objects.get(username=request.user)
 
             form.save()
 
