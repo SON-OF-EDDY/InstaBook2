@@ -143,17 +143,14 @@
                     </script>
 
 
-
-
-
-
-
                     <div class="col-md-8">
                       <div class="card-body">
 
                         <p style="font-size:18px;" class="card-title">{{user.username}}</p>
                           <p style="font-size:24px;" class="card-text">{{user.first_name}}  {{user.last_name}}</p>
                         <p style="font-size:16px;" class="card-text"><small class="text-muted">
+
+
                             {%if user.profile.youtube_url%}
                                 <a href="{{user.profile.youtube_url}}" style="color:black"><span><i class="fa-brands fa-youtube" style="color:#ffc008"></i></span><i>&nbspYoutube |</i></a>
                             {%endif%}
