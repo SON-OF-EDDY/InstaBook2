@@ -27,6 +27,8 @@ import json
 #??????     CURRENTLY WORKING ON  ????????????
 
 # VITAL
+#deleting all pics from superuser on a clean database deletes the superuser!!!! LOLZ
+# does this occur if there is another user present...????
 
 
 #-----------------------------------------------------------------------------------------------------------------------
