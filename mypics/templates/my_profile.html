@@ -23,10 +23,6 @@
         cursor: pointer;
     }
 
-    #clickableAwesomeFont2 {
-
-        cursor: pointer;
-    }
 
     #no-pics {
        color:#ffc008;
@@ -1377,34 +1373,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
 
 
-<span id='clickableAwesomeFont2'><i id='changing-icon2' class="fa-solid fa-circle-up fa-3x" style="color:#ffc008"></i></span>
 
-<br><br><h6><b>TO PICS</b></h6>
-
-<script>
-        function animate_icon() {
-
-                          var icon = document.getElementById('changing-icon2');
-
-                          // change to 2
-                          setTimeout(function () {
-                            icon.className = "fa-regular fa-circle-up fa-3x";
-                          }, 125);
-
-                          //back to 1
-                          setTimeout(function () {
-                            icon.className = "fa-solid fa-circle-up fa-3x";
-                          }, 250);
-
-                     }
-
-                    document.getElementById('clickableAwesomeFont2').onclick = function() {
-                        animate_icon();
-                        setTimeout(function () {
-                            document.getElementById("my-pics").scrollIntoView();
-                          }, 250);
-                    };
-    </script>
 
 
 <br><br>
