@@ -1360,7 +1360,7 @@ def add_song(request):
             post = form.save(commit=False)
             #OVER HERE!#
             post.author = str(request.user).lower()
-            post.connected_user = User.objects.get(username=str(request.user).lower())
+            post.connected_user = User.objects.get(username=request.user)
             form.save()
             messages.success(request, ('Song added!'))
 
