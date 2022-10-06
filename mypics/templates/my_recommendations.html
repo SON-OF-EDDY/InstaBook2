@@ -39,7 +39,7 @@
 
 
                               </td>
-                              <td style="word-break:break-all;">{{profile.member.username}}</td>
+                              <td style="word-break:break-word;">{{profile.member.username}}</td>
 
                               <td style="word-break:break-word;">
 
@@ -61,7 +61,7 @@
 
                                   {%elif profile.id not in list_requests_sent%}
 
-                                  <a  href="{%url 'send_request' profile.id url_id_b%}" class="btn btn-outline-warning">Send Friend Request</a>
+                                  <a  style="word-break:break-word;" href="{%url 'send_request' profile.id url_id_b%}" class="btn btn-outline-warning">Send Friend<br>Request</a>
 
                                         {%else%}
 
