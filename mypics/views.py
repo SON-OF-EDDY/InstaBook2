@@ -30,7 +30,6 @@ import json
 #deleting all pics from superuser on a clean database deletes the superuser!!!! LOLZ
 # does this occur if there is another user present...????
 
-
 #-----------------------------------------------------------------------------------------------------------------------
 #SECONDARY...
 
@@ -794,10 +793,11 @@ def home(request):
 
 def my_profile(request,id):
 
-
     pics_show = False
 
     songs_show = False
+
+    friends_show = True
 
     show = True
 
@@ -889,11 +889,34 @@ def my_profile(request,id):
         songs_show = True
 
 
+########################################################################################################################
+
+    # friends_list of current user...
+
+    member_instance_friends = member_instance.friend_id_list
+
+    all_members = Profile.objects.all()
+
+    final_list = []
+
+    if member_instance_friends != None:
+
+        list_member_instance_friends = member_instance_friends.split(sep=',')
+
+        for member in all_members:
+            if str(member.id) in list_member_instance_friends:
+                final_list.append(Profile.objects.get(pk=member.id))
+
+
+    if final_list == []:
+        friends_show = False
+
     return render(request, 'my_profile.html', {
 
         'show':show,
         'pics_show':pics_show,
         'songs_show':songs_show,
+        'friends_show':friends_show,
         'user_1': user_1,
         'member_id_from_user':member_id_from_user,
         'member_instance':member_instance,
@@ -907,9 +930,7 @@ def my_profile(request,id):
         'list_whose_hearted_for_each_pic':list_whose_hearted_for_each_pic,
         'logged_on_user_formatted':logged_on_user_formatted,
         'text': 'simon\njohn\nemily',
-
-
-
+        'final_list':final_list,
 
 
     })
