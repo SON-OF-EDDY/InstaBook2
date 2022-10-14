@@ -76,9 +76,235 @@
                     };
 </script>
 
+
+<br><br>
+
+
+
+<form id ='search-friend' class="d-flex" role="search" method = 'POST'>
+            {% csrf_token%}
+          <input id ='friend-input' name="friend-input" class="form-control me-2" type="search" placeholder="Enter a friend/username..." aria-label="Search">
+        <input type="hidden" name="user-id" id="user-id" value="{{user_profile.profile.id}}">
+        <input type="submit" class="btn btn-warning" value="Search" name="search-button" id="search-button">
+      </form>
+
+
+<br><br>
+
+<div id ='main-area'>
+</div>
+
+<script>
+
+                    $(document).on('submit',"form",function(e){
+
+
+                            var oForm = $(this);
+                            var formId = oForm.attr("id");
+
+
+                            if (formId == 'search-friend') {
+
+                                console.log('search bar');
+
+                                e.preventDefault();
+
+                                var inputValue = oForm.find("input#friend-input").val();
+                                var secondValue = $(this).closest('form').find('input').eq(2).val();
+
+                                console.log(`queryis: ${inputValue}`);
+                                console.log(`user is: ${secondValue}`);
+
+
+                                if (!(inputValue)=='') {
+
+                                        console.log('query is not null');
+
+
+
+                                        $.ajax({
+                                                type:'POST',
+                                                url:"{% url 'filter_friends'%}",
+                                                data:{
+
+                                                    friend_name:inputValue,
+                                                    user_id:secondValue,
+
+                                                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                                },
+
+                                                success: function(response){
+
+                                                    console.log(response);
+                                                    var size = response.filtered_friend_list.length;
+                                                    console.log(size);
+
+
+                                                    // we gotta check here for the case of no results
+                                                    // create our own div and put him in the document instead
+                                                    // or just do nothing...
+
+                                                   //delete all existing content upon search..
+
+                                                   document.getElementById('main-area').innerHTML = "";
+
+
+                                                   if (!(size==0)) {
+
+                                                   //gotta create an element with username
+
+                                                   for(let i = 0; i < size; i++){
+
+                                                       let myElm = document.createElement("p");
+
+                                                        myElm.innerHTML = '<b>'+'Username: '+'</b>'+`${response.filtered_friend_list[i][0]}`;
+
+                                                        document.getElementById('main-area').appendChild(myElm);
+
+
+                                                   //simple p element for 'profile pic'
+
+                                                        let myElm3 = document.createElement("p");
+
+                                                        myElm3.innerHTML = '<b>'+'Profile Pic: '+'</b>';
+
+                                                        document.getElementById('main-area').appendChild(myElm3);
+
+
+                                                   //img element
+
+                                                        let myElm2 = document.createElement("img");
+
+                                                        myElm2.src = 'https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/'+`${response.filtered_friend_list[i][1]}`;
+
+                                                        myElm2.width = '100';
+
+                                                        document.getElementById('main-area').appendChild(myElm2);
+
+                                                    //simple p element for 'href'
+
+                                                        let myElm4 = document.createElement("p");
+
+                                                        myElm4.innerHTML = '<br>'+'<b>'+'Profile Page: '+'</b>';
+
+                                                        document.getElementById('main-area').appendChild(myElm4);
+
+
+                                                   // href element
+
+                                                        let myElm5 = document.createElement("a");
+
+                                                        myElm5.innerHTML = '<span><i class="fa-solid fa-arrow-up-right-from-square fa-2x" style="color:#ffc008"></i></span>'+'<br><br>';
+
+                                                        var url = "{% url 'my_profile' 43%}";
+
+                                                        var id = `${response.filtered_friend_list[i][2]}`;
+
+                                                        myElm5.href = url.replace('43',id);
+
+                                                        document.getElementById('main-area').appendChild(myElm5);
+
+
+                                                   //delete button
+
+                                                        let myElm6 = document.createElement("a");
+
+                                                        myElm6.setAttribute("class","btn btn-outline-warning");
+
+                                                        myElm6.innerText = "Delete Friend";
+
+                                                        var url2 = "{% url 'delete_friend' 43%}";
+
+                                                        var id2 = `${response.filtered_friend_list[i][3]}`;
+
+                                                        myElm6.href = url2.replace('43',id2);
+
+                                                        document.getElementById('main-area').appendChild(myElm6)
+
+
+
+                                                   //spacing
+
+                                                        let myElm7 = document.createElement("p");
+
+                                                        myElm7.innerHTML = "<br>";
+
+                                                        document.getElementById('main-area').appendChild(myElm7)
+
+
+                                                   //send button
+
+                                                        //let changing_name =
+
+                                                        let myElm8 = document.createElement("a");
+
+                                                        myElm8.setAttribute("class","btn btn-warning");
+
+                                                        var url3 = "{% url 'add_message' 43%}";
+
+                                                        var id3 = `${response.filtered_friend_list[i][3]}`;
+
+                                                        myElm8.href = url3.replace('43',id3);
+
+                                                        myElm8.innerText = "Send Message";
+
+                                                        document.getElementById('main-area').appendChild(myElm8)
+
+
+                                                   //page divider
+
+
+                                                        let myElm9 = document.createElement("p");
+
+
+                                                        myElm9.innerHTML = "<hr/>";
+
+                                                        document.getElementById('main-area').appendChild(myElm9)
+
+
+
+                                                   } //end for loop
+
+                                                   // this is the end of the if for SIZE
+
+
+                                                    } else {
+
+                                                        let myElm10 = document.createElement("p");
+
+                                                        myElm10.innerText = `Sorry, no results found for '${inputValue}' !`;
+                                                        myElm10.style.fontWeight = 'bold';
+
+                                                        document.getElementById('main-area').appendChild(myElm10)
+
+                                                    }
+
+
+                                                // this is the end of the success function
+
+                                                }
+                                            });
+
+
+                                } else {
+                                    console.log('query is null!');
+                                    document.getElementById('main-area').innerHTML = "";
+
+                                }
+
+                                //end of if query is null
+
+                            }
+                    });
+                </script>
+
+
 <br><br>
 
 {%if final_list%}
+
+<h3>ALL FRIENDS:</h3>
+<hr/>
 
 {%for friend in final_list%}
 
@@ -162,7 +388,7 @@
 
 
         <br><br>
-            <b>To Profile Page</b> <a  href="{% url 'my_profile' friend.member.id%}"><span><i class="fa-solid fa-arrow-up-right-from-square fa-2x" style="color:#ffc008"></i></span></a>
+            <b>To Profile Page</b> <a  href="{% url 'my_profile' friend.member.id%}"><br><span><i class="fa-solid fa-arrow-up-right-from-square fa-2x" style="color:#ffc008"></i></span></a>
             <br>
             <br>
 
@@ -225,9 +451,6 @@
                           <p style="font-size:24px;" class="card-text"><h4>You currently have no friends!</h4>
     <br>
 <h4>Visit the <a id ="no-friends" href="{% url 'my_recommendations' user.id%}">MyRecommendations</a> page to add some new friends!!!</h4> </p>
-
-
-
 
 
                       </div>

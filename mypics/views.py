@@ -21,21 +21,23 @@ import json
 #??????     CURRENTLY WORKING ON  ????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
-# Csrf token problems.... ????
+# get modals working with pictures - just display pic in frame first
+
+# if i can do this then the following should be a piece of cake (except for the hearts...)
+# maybe add hearting options later...
+# modal work with delete button on myfriends page...
+# see number of hearts and hearters on mypics
+# add the pic and song filters on the mypics and mysongs page...
+# add friend filter to the myprofile page....
 
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #??????     CURRENTLY WORKING ON  ????????????
 
 # VITAL
-#deleting all pics from superuser on a clean database deletes the superuser!!!! LOLZ
-# does this occur if there is another user present...????
 
 #-----------------------------------------------------------------------------------------------------------------------
 #SECONDARY...
 
-# extensive testing with new accounts etc etc etc... who knows what mistakes i might find lol....
-
-# make a logo for my app like in google chrome views...
 
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 #???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
@@ -1951,11 +1953,177 @@ def filter_songs(request):
             return JsonResponse({"filtered_song_list":filtered_song_list})
 
 
+def filter_friends(request):
+
+    if request.method == 'POST':
+
+        friend_query = request.POST['friend_name']
+
+        if friend_query != '' or friend_query != None:
+
+            user_id = request.POST['user_id']
+
+            user_profile = Profile.objects.get(pk=user_id)
+
+            member_instance_friends = user_profile.friend_id_list
+
+            all_members = Profile.objects.all()
+
+            final_list = []
+
+            if member_instance_friends != None:
+
+                list_member_instance_friends = member_instance_friends.split(sep=',')
+
+                for member in all_members:
+                    if str(member.id) in list_member_instance_friends:
+                        final_list.append(Profile.objects.get(pk=member.id))
 
 
 
+            ############################################################################################################
+
+            #user_name = user_name.lower()
+
+            friend_query = friend_query.lower()
+
+            # i wanna replace everything that isn't alphanumeric with null string???
+
+            friend_query = friend_query.replace(' ','')
+
+            #all_profiles = Profile.objects.all()
+
+            #for profile in all_profiles:
+
+                #if str(profile.author).lower() == user_name:
+                    #user_friends.append(profile)
+
+            filtered_friend_list = []
+
+            for profile in final_list:
+
+                check_1 = str(profile.member.username).lower().replace(' ','')
+                check_2 = str(profile.member.first_name).lower().replace(' ','')
+                check_3 = str(profile.member.last_name).lower().replace(' ', '')
+
+                #match_object = re.search(friend_query,check_1+check_2)
+                #match_object_2 = re.search(friend_query, check_2+check_1)
+                match_object = re.search(friend_query,check_1)
+
+                if check_2 != '':
+                    match_object_2 = re.search(friend_query,check_2)
+                else:
+                    match_object_2 = False
+                if check_3 != '':
+                    match_object_3 = re.search(friend_query,check_3)
+                else:
+                    match_object_3 = False
+
+                #ready_text = f"<b>Username:</b><br>{profile.member.username}<br><br><b>Profile Pic:</b><br><br><br>"
+
+                href = str(profile.profile_pic)
+                href = href.replace('media/images/','')
 
 
+                ready_text = [profile.member.username,href,profile.member.id,profile.id]
+
+                if match_object:
+
+                    filtered_friend_list.append(ready_text)
+
+                elif match_object_2:
+
+                    filtered_friend_list.append(ready_text)
+
+                elif match_object_3:
+
+                    filtered_friend_list.append(ready_text)
+
+            return JsonResponse({"filtered_friend_list":filtered_friend_list})
+            #return JsonResponse({"filtered_friend_list": member_instance_friends})
+
+
+        else:
+
+            filtered_friend_list = []
+
+            return JsonResponse({"filtered_friend_list":filtered_friend_list})
+
+
+def filter_pics(request):
+
+    if request.method == 'POST':
+
+        pic_query = request.POST['pic_name']
+
+        if pic_query != '' or pic_query != None:
+
+            user_name = request.POST['user_name']
+
+            user_name = user_name.lower()
+
+            pic_query = pic_query.lower()
+
+            # i wanna replace everything that isn't alphanumeric with null string???
+
+            pic_query = pic_query.replace(' ', '')
+
+            all_pic = Picture.objects.all()
+
+            user_pics = []
+
+            for pic in all_pic:
+
+                if str(pic.author).lower() == user_name:
+                    user_pics.append(pic)
+
+            filtered_pic_list = []
+
+            for pic in user_pics:
+
+                check_1 = str(pic.title).lower().replace(' ', '')
+                check_2 = str(pic.description).lower().replace(' ', '')
+
+                match_object = re.search(pic_query, check_1)
+                match_object_2 = re.search(pic_query, check_2)
+                #match_object_3 = re.search(check_1, pic_query)
+                #match_object_4 = re.search(check_2, pic_query)
+
+                href = str(pic.picture_image)
+                href = href.replace('media/images/', '')
+
+                ready_text = [str(pic.title),str(pic.description),href]
+
+                if match_object:
+
+                    filtered_pic_list.append(ready_text)
+
+                elif match_object_2:
+
+                    filtered_pic_list.append(ready_text)
+
+                #elif match_object_3:
+
+                    #filtered_pic_list.append(ready_text)
+
+                #elif match_object_4:
+
+                    #filtered_pic_list.append(ready_text)
+
+            #users = User.objects.all().values()  # or simply .values() to get all fields
+            #users_list = list(users)  # important: convert the QuerySet to a list object
+            return JsonResponse({'filtered_pic_list':filtered_pic_list})
+
+            #return JsonResponse('yo')
+            #return JsonResponse({"filtered_pic_list": random_list,"test":'hey'})
+            #return JsonResponse({"filtered_friend_list": filtered_pic_list})
+            #return JsonResponse(filtered_pic_list,safe=False)
+
+        else:
+
+            filtered_pic_list = []
+
+            return JsonResponse({"filtered_pic_list": filtered_pic_list})
 
 
 def remove_like(request):
