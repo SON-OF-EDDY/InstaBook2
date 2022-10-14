@@ -3,7 +3,7 @@
 {% block content%}
 
     {%if user.is_authenticated %}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
 
@@ -100,6 +100,287 @@
                     };
 
                 </script>
+
+
+
+
+
+<br>
+<br>
+
+<form id ='search-song' class="d-flex" role="search" method = 'POST'>
+            {% csrf_token%}
+          <input id ='song-input' name="song-input" class="form-control me-2" type="search" placeholder="Enter a song and/or artist..." aria-label="Search">
+        <input type="hidden" name="user-id" id="user-id" value="{{current_user}}">
+        <input type="submit" class="btn btn-warning" value="Search" name="search-button" id="search-button">
+      </form>
+
+<br>
+<br>
+<div id ='main-area'>
+</div>
+<br><br><br>
+
+<h3>ALL SONGS:</h3>
+
+
+<script>
+
+                    $(document).on('submit',"form",function(e){
+
+
+                            var oForm = $(this);
+                            var formId = oForm.attr("id");
+
+
+                            if (formId == 'search-song') {
+
+                                console.log('search bar');
+
+                                e.preventDefault();
+
+                                var inputValue = oForm.find("input#song-input").val();
+                                var secondValue = $(this).closest('form').find('input').eq(2).val();
+
+                                console.log(`queryis: ${inputValue}`);
+                                console.log(`user is: ${secondValue}`);
+
+
+                                if (!(inputValue)=='') {
+
+                                        console.log('query is not null');
+
+
+                                        $.ajax({
+                                                type:'POST',
+                                                url:"{% url 'filter_songs'%}",
+                                                data:{
+
+                                                    song_name:inputValue,
+                                                    user_name:secondValue,
+
+                                                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                                },
+
+                                                success: function(response){
+
+                                                    console.log(response);
+                                                    var size = response.filtered_song_list.length;
+                                                    console.log(size);
+
+
+                                                    // we gotta check here for the case of no results
+                                                    // create our own div and put him in the document instead
+                                                    // or just do nothing...
+
+
+                                                    if (!(size==0)) {
+
+
+                                                                        function tableCreate(row, col){
+
+                                                                            if (document.getElementById('search-results')) {
+
+                                                                                document.getElementById('search-results').remove();
+                                                                                console.log("previous table deleted!");
+
+                                                                            } else {
+
+                                                                                console.log("there is no table yet!");
+                                                                            }
+
+
+                                                                            //gotta delete old DIVS here too LOL
+
+                                                                            if (document.getElementById('no-results-box')) {
+
+                                                                                document.getElementById('no-results-box').remove();
+                                                                                console.log("previous DIV deleted!");
+
+                                                                            } else {
+
+                                                                                console.log("there is no div yet!");
+                                                                            }
+
+
+                                                                            let body = document.body;
+                                                                            let tbl  = document.createElement('table');
+                                                                            tbl.setAttribute("id", "search-results");
+                                                                            tbl.setAttribute("class","table");
+
+                                                                            let tr = tbl.insertRow();
+
+                                                                            let header = ['Title and Artist','File'];
+
+                                                                            var bold = document.createElement('strong');
+
+                                                                            for(let j = 0; j < col; j++){
+                                                                                        let td = tr.insertCell();
+                                                                                        td.appendChild(document.createTextNode(`${header[j]}`));
+
+                                                                                        //td.style.border = '1px solid black';
+                                                                                        //td.style.borderColor = "black";
+                                                                                        //td.style.backgroundColor = "white";
+                                                                                        //td.style.color = 'black';
+                                                                                        td.style.fontWeight = 'bold';
+                                                                                        //td.style.border = '3px solid black';
+                                                                                    }
+
+
+                                                                            console.log("new table created");
+
+
+                                                                            //tbl.style.width  = '1000px';
+                                                                            //tbl.style.border = '3px solid black';
+
+                                                                            for(let i = 0; i < row; i++){
+                                                                                let tr = tbl.insertRow();
+
+                                                                                for(let j = 0; j < col; j++){
+
+
+                                                                                        let td = tr.insertCell();
+
+
+
+
+                                                                                        td.innerHTML = `${response.filtered_song_list[i][j]}`;
+
+
+
+                                                                                        //td.style.border = '3px solid black';
+                                                                                        //td.style.width  = '500px';
+
+                                                                                    }
+                                                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                            //body.appendChild(tbl);
+                                                                            document.getElementById('main-area').appendChild(tbl);
+
+                                                                        }
+
+                                                                        tableCreate(size,1);
+
+                                                    // this is the end of the if for SIZE
+                                                    } else {
+
+                                                        //gotta delete old divs too...
+
+                                                        console.log('there are no results!!!!');
+
+                                                        if (document.getElementById('no-results-box')) {
+
+                                                            document.getElementById('no-results-box').remove();
+                                                            console.log("previous DIV deleted!");
+
+                                                        } else {
+
+                                                            console.log("there is no div yet!");
+                                                        }
+
+                                                        // gotta delete the table if it exists here too...
+
+                                                        if (document.getElementById('search-results')) {
+
+                                                            document.getElementById('search-results').remove();
+                                                            console.log("previous table deleted!");
+
+                                                        } else {
+
+                                                            console.log("there is no table yet!");
+                                                        }
+
+
+                                                        var box = document.createElement("div");
+
+
+                                                        box.setAttribute("id","no-results-box");
+                                                        box.innerHTML = `Sorry, no results found for '${inputValue}' !`;
+                                                        box.style.fontWeight = 'bold';
+                                                        document.getElementById('main-area').appendChild(box);
+                                                        //document.getElementById().appendChild(box);
+
+                                                    }
+
+
+                                                // this is the end of the success function
+                                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            //end of ajax
+                                            });
+
+
+
+
+                                //end of if query is null
+                                } else {
+                                    //gotta delete any old tables from before if exist...
+                                    console.log(" query is null!!!");
+
+                                    if (document.getElementById('search-results')) {
+
+                                        document.getElementById('search-results').remove();
+                                        console.log("previous table deleted!");
+
+                                    } else {
+
+                                        console.log("there is no table yet!");
+                                    }
+
+
+                                    //gotta delete old DIVS too
+
+                                    if (document.getElementById('no-results-box')) {
+
+                                        document.getElementById('no-results-box').remove();
+                                        console.log("previous DIV deleted!");
+
+                                    } else {
+
+                                        console.log("there is no div yet!");
+                                    }
+
+
+                                }
+
+                            }
+
+                    });
+                </script>
+
+
+
+
+
 
 
 

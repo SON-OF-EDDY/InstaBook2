@@ -4,6 +4,7 @@
 {% block content%}
 
     {%if user.is_authenticated %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
 
@@ -108,6 +109,271 @@
                     };
 
                 </script>
+
+
+<br>
+<br>
+
+
+<form id ='search-pic' class="d-flex" role="search" method = 'POST'>
+            {% csrf_token%}
+          <input id ='pic-input' name="pic-input" class="form-control me-2" type="search" placeholder="What pic are you looking for..." aria-label="Search">
+        <input type="hidden" name="user-id2" id="user-id2" value="{{current_user}}">
+        <input type="submit" class="btn btn-warning" value="Search" name="search-button" id="search-button2">
+      </form>
+
+<br><br>
+
+
+<div id ='main-area2'>
+</div>
+<br><br>
+
+
+<script>
+
+                    $(document).on('submit',"form",function(e){
+
+                            var oForm = $(this);
+                            //console.log(oForm);
+                            var formId = oForm.attr("id");
+
+                            if (formId == 'search-pic') {
+
+                                console.log('search bar pics');
+
+                                e.preventDefault();
+
+                                var inputValue = oForm.find("input#pic-input").val();
+
+                                var secondValue = oForm.find("input#user-id2").val();
+
+                                console.log(`queryis: ${inputValue}`);
+                                console.log(`user is: ${secondValue}`);
+
+
+                                if (!(inputValue)=='') {
+
+                                        console.log('query is not null');
+
+
+                                        $.ajax({
+                                                type:'POST',
+                                                url:"{% url 'filter_pics'%}",
+                                                data:{
+
+                                                    pic_name:inputValue,
+                                                    user_name:secondValue,
+
+                                                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                                },
+
+                                                success: function(response){
+
+                                                    console.log(response);
+                                                    var size = response.filtered_pic_list.length;
+                                                    console.log(size);
+
+
+                                                    //delete all existing content upon search..
+
+                                                   document.getElementById('main-area2').innerHTML = "";
+
+
+                                                   if (!(size==0)) {
+
+                                                   //gotta create an element with username
+
+                                                   for(let i = 0; i < size; i++){
+
+                                                       let myElm = document.createElement("p");
+
+                                                        myElm.innerHTML = '<b>'+'Title: '+'</b>'+`${response.filtered_pic_list[i][0]}`;
+
+                                                        document.getElementById('main-area2').appendChild(myElm);
+
+
+                                                   //simple p element for 'description'
+
+                                                        let myElm3 = document.createElement("p");
+
+                                                        myElm3.innerHTML = '<b>'+'Description: '+'</b>'+`${response.filtered_pic_list[i][1]}`;
+
+                                                        document.getElementById('main-area2').appendChild(myElm3);
+
+
+                                                   //img element
+
+
+
+                                                        // need to do an internal check here for mobile or PC
+
+                                                        function detectMob() {
+                                                            const toMatch = [
+                                                                /Android/i,
+                                                                /webOS/i,
+                                                                /iPhone/i,
+                                                                /iPad/i,
+                                                                /iPod/i,
+                                                                /BlackBerry/i,
+                                                                /Windows Phone/i
+                                                            ];
+
+                                                            return toMatch.some((toMatchItem) => {
+                                                                return navigator.userAgent.match(toMatchItem);
+                                                            });
+                                                        }
+
+
+                                                        if (detectMob()) {
+
+                                                                var to_log_1 = screen.availWidth * 0.95;
+                                                                var to_log_2 = to_log_1 * 0.9;
+
+
+                                                            } else {
+
+                                                                var to_log_1 = (screen.availWidth * 0.5) ;
+                                                                var to_log_2 = to_log_1 * 0.9;
+
+
+                                                        }
+
+
+                                                        let myElm2 = document.createElement("img");
+
+                                                        myElm2.src = 'https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/'+`${response.filtered_pic_list[i][2]}`;
+
+                                                        myElm2.width = '100';
+
+                                                        document.getElementById('main-area2').appendChild(myElm2);
+
+                                                        var myModal = null;
+
+                                                        const showModal = () => {
+
+                                                            if(myModal !== null){
+                                                                myModal.remove();
+                                                            }
+
+
+                                                            myModal = document.createElement("div");
+
+                                                            myModal.innerHTML = `
+
+                                                            <div class="modal fade" tabindex="-1" role="dialog">
+                                                                  <div class="modal-dialog modal-dialog-centered" style="max-width: ${to_log_1}px" role="document">
+                                                                    <div class="modal-content">
+                                                                      <div class="modal-header">
+                                                                        <h6 class="modal-title w-100" id="exampleModalLabel2" style="text-align:center">"${response.filtered_pic_list[i][0]}"</h6>
+                                                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                      </div>
+                                                                      <div class="modal-body" style="width: auto; margin-left: auto; margin-right: auto">
+                                                                        <img src="https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/${response.filtered_pic_list[i][2]}" width = "${to_log_2}">
+
+                                                                      </div>
+                                                                      <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary modal-success-btn" data-bs-dismiss="modal">Close</button>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                            `
+
+                                                            document.body.append(myModal);
+
+                                                            var modal = new bootstrap.Modal(myModal.querySelector('.modal'));
+                                                            modal.show();
+
+                                                        }
+
+
+
+                                                        myElm2.addEventListener('click',function(){
+
+                                                          showModal();
+
+                                                        });
+
+
+                                                   //page divider
+
+
+                                                        let myElm9 = document.createElement("p");
+
+                                                        myElm9.innerHTML = "<hr/>";
+
+                                                        document.getElementById('main-area2').appendChild(myElm9)
+
+
+
+                                                   } //end for loop
+
+                                                   // this is the end of the if for SIZE
+
+                                                   } else {
+
+                                                        let myElm10 = document.createElement("p");
+
+                                                        myElm10.innerText = `Sorry, no results found for '${inputValue}' !`;
+                                                        myElm10.style.fontWeight = 'bold';
+
+                                                        document.getElementById('main-area2').appendChild(myElm10)
+
+                                                    }
+
+
+                                                    // this is the end of the success function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                }
+                                            });
+
+
+                                } else {
+                                    console.log('query is null!');
+                                    document.getElementById('main-area2').innerHTML = "";
+
+                                }
+
+                                //end of if query is null
+
+                            }
+                    });
+                </script>
+
+
+
+
+
+<h3>ALL PICS:</h3>
+
+
+
+
+
 
 
 

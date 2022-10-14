@@ -19,11 +19,13 @@
 
 
     #clickableAwesomeFont {
+    display:inline-block;
 
         cursor: pointer;
     }
 
     #clickableAwesomeFont2 {
+    display:inline-block;
 
         cursor: pointer;
     }
@@ -75,6 +77,26 @@
        color: #ffc008;
        text-decoration: underline;
     }
+
+    #big-div {
+        text-align:center;
+        width: 100%;
+        height: 90px;
+        white-space: nowrap;
+
+    }
+
+    .child {
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+
+    }
+
+
+
+
+
 
 
 
@@ -248,17 +270,31 @@
 
 <br>
 
-<span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i>
+
+<div id="big-div">
+
+   <div class="child"><span id='clickableAwesomeFont'><i id = 'changing-icon' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i>
 <br><br><h6><b>TO SONGS</b></h6>
 
 </span><span id='to-top'><i id = 'changing-icon3' class="fa-solid fa-circle-up fa-3x" style="color:#ffc008"></i>
                 </span>
+   </div>
 
+
+<div class="child"><span id='clickableAwesomeFont2'><i id = 'changing-icon2' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i></span>
 <br><br>
 
-<span id='clickableAwesomeFont2'><i id = 'changing-icon2' class="fa-solid fa-circle-down fa-3x" style="color:#ffc008"></i></span>
-<br><br>
 <h6 id="header-friends"><b>TO FRIENDS</b></h6>
+</div>
+
+
+</div>
+
+
+
+
+
+
 
 
                 <script>
@@ -355,7 +391,7 @@
                     $(document).on('submit',"form",function(e){
 
                             var oForm = $(this);
-                            console.log(oForm);
+                            //console.log(oForm);
                             var formId = oForm.attr("id");
 
                             if (formId == 'search-pic') {
@@ -449,20 +485,13 @@
 
                                                                 var to_log_1 = screen.availWidth * 0.95;
                                                                 var to_log_2 = to_log_1 * 0.9;
-                                                                var to_log_3 = 'mobile';
-
-                                                                //document.getElementById('resize'+{{entry.id}}).width = to_log_2;
-                                                                //document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
 
 
                                                             } else {
 
                                                                 var to_log_1 = (screen.availWidth * 0.5) ;
                                                                 var to_log_2 = to_log_1 * 0.9;
-                                                                var to_log_3 = 'pc';
 
-                                                                //document.getElementById('resize'+{{entry.id}}).width = to_log_2;
-                                                                //document.getElementById('type'+{{entry.id}}).style["max-width"] = `${to_log_1}px`;
 
                                                         }
 
@@ -499,7 +528,7 @@
                                                                       </div>
                                                                       <div class="modal-body" style="width: auto; margin-left: auto; margin-right: auto">
                                                                         <img src="https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/${response.filtered_pic_list[i][2]}" width = "${to_log_2}">
-                                                                        ${to_log_3}
+
                                                                       </div>
                                                                       <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary modal-success-btn" data-bs-dismiss="modal">Close</button>
@@ -1163,7 +1192,7 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
 
                 //$(this).hide();
 
-                console.log(oForm);
+                //console.log(oForm);
                 //console.log(formId);
                 console.log(firstValue);
                 console.log(secondValue);
@@ -1670,10 +1699,198 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
                 </script>
 
 
-
 <hr/>
                  <h1 id="my-friends">MY FRIENDS:</h1>
 <hr/>
+
+<br>
+<br>
+
+<form id ='search-friend' class="d-flex" role="search" method = 'POST'>
+            {% csrf_token%}
+          <input id ='friend-input' name="friend-input" class="form-control me-2" type="search" placeholder="Enter a friend/username..." aria-label="Search">
+        <input type="hidden" name="user-id3" id="user-id3" value="{{user_1.profile.id}}">
+        <input type="submit" class="btn btn-warning" value="Search" name="search-button" id="search-button3">
+      </form>
+<br><br>
+
+
+<div id ='main-area3'>
+</div>
+<br><br>
+
+
+<script>
+
+                    $(document).on('submit',"form",function(e){
+
+                            var oForm = $(this);
+                            //console.log(oForm);
+                            var formId = oForm.attr("id");
+
+                            if (formId == 'search-friend') {
+
+                                console.log('search friend pics');
+
+                                e.preventDefault();
+
+                                var inputValue = oForm.find("input#friend-input").val();
+                                var secondValue = oForm.find("input#user-id3").val();
+
+                                console.log(`queryis: ${inputValue}`);
+                                console.log(`user is: ${secondValue}`);
+
+
+                                if (!(inputValue)=='') {
+
+                                        console.log('query is not null');
+
+
+                                        $.ajax({
+                                                type:'POST',
+                                                url:"{% url 'filter_friends'%}",
+                                                data:{
+
+                                                    friend_name:inputValue,
+                                                    user_id:secondValue,
+
+                                                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                                },
+
+                                                success: function(response){
+
+                                                    console.log(response);
+                                                    var size = response.filtered_friend_list.length;
+                                                    console.log(size);
+
+
+                                                    //delete all existing content upon search..
+
+                                                   document.getElementById('main-area3').innerHTML = "";
+
+
+                                                   if (!(size==0)) {
+
+                                                   //gotta create an element with username
+
+                                                   function tableCreate(row, col){
+
+
+                                                                            //let body = document.body;
+                                                                            let tbl  = document.createElement('table');
+                                                                            tbl.setAttribute("id", "search-results");
+                                                                            tbl.setAttribute("class","table");
+
+                                                                            let tr = tbl.insertRow();
+
+                                                                            let header = ['Profile Pic','User Name'];
+
+                                                                            var bold = document.createElement('strong');
+
+                                                                            for(let j = 0; j < col; j++){
+                                                                                        let td = tr.insertCell();
+                                                                                        td.appendChild(document.createTextNode(`${header[j]}`));
+
+
+                                                                                        td.style.fontWeight = 'bold';
+
+                                                                                    }
+
+
+
+                                                                            for(let i = 0; i < row; i++){
+                                                                                let tr = tbl.insertRow();
+
+                                                                                for(let j = 1; j >= 0; j--){
+
+                                                                                        let td = tr.insertCell();
+
+
+                                                                                        //td.innerText = `${response.filtered_friend_list[i][j]}`;
+
+                                                                                        if (j==1) {
+
+                                                                                            td.innerText = '';
+
+                                                                                            let link_2 = document.createElement("a");
+
+                                                                                            var url6 = "{% url 'my_profile' 43%}";
+
+                                                                                            var id6 = `${response.filtered_friend_list[i][2]}`;
+
+                                                                                            link_2.href = url6.replace('43',id6);
+
+                                                                                            link_2.innerHTML =
+                                                                                            `
+                                                                                            <img src = "https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/${response.filtered_friend_list[i][j]}" width="100">
+                                                                                            `
+
+                                                                                            td.appendChild(link_2);
+
+                                                                                        } else if (j==0) {
+
+                                                                                            //td.innerText = `${response.filtered_friend_list[i][j]}`;
+
+                                                                                            let link = document.createElement("a");
+
+                                                                                            var url5 = "{% url 'my_profile' 43%}";
+
+                                                                                            var id5 = `${response.filtered_friend_list[i][2]}`;
+
+                                                                                            link.innerText = `${response.filtered_friend_list[i][j]}`;
+
+                                                                                            link.style.color = "#ffc008";
+
+                                                                                            link.style.textDecoration = "underline";
+
+                                                                                            link.href = url5.replace('43',id5);
+
+                                                                                            td.appendChild(link)
+
+
+                                                                                        }
+
+                                                                                    }
+                                                                            }
+
+                                                                            document.getElementById('main-area3').appendChild(tbl);
+
+                                                                        }
+
+                                                                        tableCreate(size,2);
+
+                                                   } else {
+
+                                                        let myElm10 = document.createElement("p");
+
+                                                        myElm10.innerText = `Sorry, no results found for '${inputValue}' !`;
+                                                        myElm10.style.fontWeight = 'bold';
+
+                                                        document.getElementById('main-area3').appendChild(myElm10)
+
+                                                    }
+
+
+
+                                                    // this is the end of the success function
+                                               }
+                                            });
+
+
+                                } else {
+                                    console.log('query is null!');
+                                    document.getElementById('main-area3').innerHTML = "";
+
+                                }
+
+                                //end of if query is null
+
+                            }
+                    });
+                </script>
+
+
+
 
 
 {%if logged_on_user_formatted != current_user%}
@@ -1683,9 +1900,8 @@ btn-sm" value="Remove Like ❤" name="mybutton2{{entry.id}}" id="mybutton2{{entr
     </script>
 {%endif%}
 
-
 {%if friends_show%}
-<br><br>
+<h3>ALL FRIENDS:</h3>
 
                     <table class="table">
 

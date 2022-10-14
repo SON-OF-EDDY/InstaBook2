@@ -115,7 +115,6 @@
                                 console.log(`queryis: ${inputValue}`);
                                 console.log(`user is: ${secondValue}`);
 
-
                                 if (!(inputValue)=='') {
 
                                         console.log('query is not null');
@@ -213,13 +212,65 @@
 
                                                         myElm6.innerText = "Delete Friend";
 
-                                                        var url2 = "{% url 'delete_friend' 43%}";
+                                                        //var url2 = "{% url 'delete_friend' 43%}";
 
-                                                        var id2 = `${response.filtered_friend_list[i][3]}`;
+                                                        //var id2 = `${response.filtered_friend_list[i][3]}`;
 
-                                                        myElm6.href = url2.replace('43',id2);
+                                                        //myElm6.href = url2.replace('43',id2);
 
                                                         document.getElementById('main-area').appendChild(myElm6)
+
+
+                                                        var myModal = null;
+
+                                                        const showModal = () => {
+
+                                                            if(myModal !== null){
+                                                                myModal.remove();
+                                                            }
+
+
+                                                            myModal = document.createElement("div");
+
+                                                            myModal.innerHTML = `
+
+                                                            <div class="modal fade" tabindex="-1" role="dialog">
+                                                                  <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                      <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">WARNING</h5>
+                                                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                      </div>
+                                                                      <div class="modal-body">
+                                                                        Are you sure you want to delete this friend?
+
+                                                                      </div>
+                                                                      <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary modal-success-btn" data-bs-dismiss="modal">No</button>
+                                                                            <a  href="http://127.0.0.1:8000/delete_friend/${response.filtered_friend_list[i][3]}" class="btn btn-outline-warning">Yes</a>
+
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                            `
+
+                                                            document.body.append(myModal);
+
+                                                            var modal = new bootstrap.Modal(myModal.querySelector('.modal'));
+                                                            modal.show();
+
+                                                        }
+
+
+
+                                                        myElm6.addEventListener('click',function(){
+
+                                                          showModal();
+
+                                                        });
 
 
 
@@ -400,7 +451,7 @@
             <br><br>
 
 
-        <div class="modal fade" id="{{friend.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="{{friend.id}}" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
