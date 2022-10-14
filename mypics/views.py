@@ -1186,6 +1186,8 @@ def delete_friend(request,friend_id):
 
     current_user = Profile.objects.get(member=request.user)
 
+    current = request.user.id
+
     profile_instance_target = Profile.objects.get(pk=friend_id)
 
     temp_str = current_user.friend_id_list
@@ -1276,17 +1278,19 @@ def delete_friend(request,friend_id):
         if str(member.id) in list_member_instance_friends:
             final_list.append(Profile.objects.get(pk=member.id))
 
+    #return redirect()
 
+    return redirect(f'/add_friend/{current}')
 
-    return render(request, 'add_friend.html', {
-
-        'all_members': all_members,
-        'member_id_from_user': member_id_from_user,
-        'list_member_instance_friends': list_member_instance_friends,
-        'final_list': final_list,
-        'display':True
-
-    })
+    # return render(request, 'add_friend.html', {
+    #
+    #     'all_members': all_members,
+    #     'member_id_from_user': member_id_from_user,
+    #     'list_member_instance_friends': list_member_instance_friends,
+    #     'final_list': final_list,
+    #     'display':True
+    #
+    # })
 
 
 
