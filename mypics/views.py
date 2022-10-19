@@ -2019,7 +2019,7 @@ def filter_friends(request):
                 #ready_text = f"<b>Username:</b><br>{profile.member.username}<br><br><b>Profile Pic:</b><br><br><br>"
 
                 if profile.profile_pic == '' or profile.profile_pic == None:
-                    href = 'http://127.0.0.1:8000/static/default_profile.png'
+                    href = 'https://insta-face-gram.herokuapp.com/static/default_profile.png'
                     #href = 'https://insta-face-gram.herokuapp.com/static/default_profile.png'
                 else:
                     href = str(profile.profile_pic)
