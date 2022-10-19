@@ -174,7 +174,15 @@
 
                                                         let myElm2 = document.createElement("img");
 
-                                                        myElm2.src = 'https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/'+`${response.filtered_friend_list[i][1]}`;
+                                                        if (`${response.filtered_friend_list[i][1]}`=='https://insta-face-gram.herokuapp.com/static/default_profile.png') {
+                                                            //console.log('use standard pic');
+                                                            myElm2.src = 'https://insta-face-gram.herokuapp.com/static/default_profile.png';
+                                                        } else {
+                                                            //console.log('use custom pic');
+                                                            myElm2.src = 'https://res.cloudinary.com/dafucmz70/image/upload/v1/media/images/'+`${response.filtered_friend_list[i][1]}`;
+                                                        }
+
+
 
                                                         myElm2.width = '100';
 
