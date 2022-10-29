@@ -28,9 +28,6 @@
                 </div>
 
 
-
-
-
     <table class="table">
 
         <thead class="thead-dark">
@@ -52,7 +49,7 @@
 
                       {%if entry.profile_pic%}
 
-                      <img src="{{entry.profile_pic.url}}" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{{entry.profile_pic.url}}" width = 100></a>
 
                       {%else%}
 
@@ -76,20 +73,9 @@
     </table>
 
 
-
-
     {%endif%}
 
-
     {%if declined_list%}
-
-
-
-
-
-
-
-
 
 <div class="card mb-3" style="max-width: 540px;">
                   <div class="row g-0">
@@ -100,8 +86,6 @@
 
 
                           <p style="font-size:24px;" class="card-text"><h2 style="font-size:24px;">THE FOLLOWING USERS <font style="color:#ffc008"><b>DECLINED</b></font> THE FRIEND REQUEST YOU SENT THEM:</h2></p>
-
-
 
 
                       </div>
@@ -136,7 +120,7 @@
 
                   {%if entry.profile_pic%}
 
-                      <img src="{{entry.profile_pic.url}}" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{{entry.profile_pic.url}}" width = 100></a>
 
                       {%else%}
 
@@ -212,7 +196,7 @@
 
                                                       {%if entry.profile_pic%}
 
-                      <img src="{{entry.profile_pic.url}}" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{{entry.profile_pic.url}}" width = 100></a>
 
                       {%else%}
 
@@ -336,7 +320,7 @@
 
                       {%if entry.profile_pic%}
 
-                      <img src="{{entry.profile_pic.url}}" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{{entry.profile_pic.url}}" width = 100></a>
 
                       {%else%}
 

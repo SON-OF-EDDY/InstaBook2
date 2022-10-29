@@ -72,7 +72,7 @@ def russian_youtube():
 #
 #     weather_description = (soup.find("div", class_="TMYuez")).string
 #
-#     weather_description = weather_description.lower()
+#     weather_description = weather_description
 #
 #     icon_dictionary = {
 #

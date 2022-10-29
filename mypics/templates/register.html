@@ -7,6 +7,19 @@
 <hr/>
 <br>
 
+{%if to_change%}
+    {{to_change}}
+{%endif%}
+<br>
+{%if all_users%}
+    {{all_users}}
+{%endif%}
+<br>
+{%if temp%}
+    {{temp}}
+{%endif%}
+
+
 <form action="{%url 'register'%}" method="POST">
 
     {% csrf_token%}

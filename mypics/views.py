@@ -50,7 +50,7 @@ import json
 
 def report(request):
 
-    current_user = str(request.user).lower()
+    current_user = str(request.user)
 
     if request.method == 'POST':
 
@@ -59,7 +59,7 @@ def report(request):
         if form.is_valid():
 
             post = form.save(commit=False)
-            post.user_filing_complaint = str(request.user).lower()
+            post.user_filing_complaint = str(request.user)
             form.save()
 
             messages.success(request, ('Complaint Sent to Admin!'))
@@ -86,7 +86,7 @@ def report(request):
 
 def help(request):
 
-    current_user = str(request.user.username).lower()
+    current_user = str(request.user.username)
 
     try:
         entry = Help.objects.get(user_asking_help = current_user )
@@ -104,7 +104,7 @@ def help(request):
 
 def critique(request):
 
-    current_user = str(request.user).lower()
+    current_user = str(request.user)
 
     if request.method == 'POST':
 
@@ -112,7 +112,7 @@ def critique(request):
 
         if form.is_valid():
             post = form.save(commit=False)
-            post.user_making_recommendation = str(request.user).lower()
+            post.user_making_recommendation = str(request.user)
             form.save()
 
             messages.success(request, ('Recommendation Sent to Admin!'))
@@ -176,7 +176,7 @@ def search(request):
 
             else:
 
-                first_name = str(user.member.first_name).lower()
+                first_name = str(user.member.first_name)
 
                 match_object = re.search(query,first_name)
 
@@ -187,7 +187,7 @@ def search(request):
 
                 else:
 
-                    last_name = str(user.member.last_name).lower()
+                    last_name = str(user.member.last_name)
 
                     match_object = re.search(query, last_name)
 
@@ -296,7 +296,6 @@ def search(request):
     else:
 
         return redirect('home')
-
 
 
 def delete_account(request,user_id):
@@ -803,11 +802,11 @@ def my_profile(request,id):
 
     user_1 = User.objects.get(pk=id)
 
-    current_user = str(user_1).lower()
+    current_user = str(user_1)
 
     logged_on_user = request.user
 
-    logged_on_user_formatted = str(request.user.username).lower()
+    logged_on_user_formatted = str(request.user.username)
 
     member_id_from_user = user_1.profile.id
 
@@ -881,7 +880,7 @@ def my_profile(request,id):
 
     if list_of_users_songs != []:
 
-        #list_of_users_songs = list(map(lambda x:x.title.lower(),list_of_users_songs))
+        #list_of_users_songs = list(map(lambda x:x.title,list_of_users_songs))
         songs_show = True
 
 
@@ -983,8 +982,10 @@ def register(request):
         if form.is_valid():
 
             form.save()
+
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
+
             messages.success(request, (f'Successfully Registered. Welcome,{username}!'))
             user = authenticate(request, username=username, password=password)
 
@@ -993,7 +994,7 @@ def register(request):
 
             login(request,user)
 
-            return redirect('home')
+            return redirect("home")
 
         else:
 
@@ -1025,8 +1026,6 @@ def edit_profile(request,id):
     else:
         display = False
 
-
-
     user_profile = User.objects.get(pk=id)
 
     entries = Picture.objects.all()
@@ -1042,17 +1041,16 @@ def edit_profile(request,id):
             form.save()
 
             username = str(form.cleaned_data['username'])
-
+            
             for entry in entries:
 
-                if entry.author == str(old_username).lower():
-                    entry.author = str(username).lower()
+                if entry.author == str(old_username):
+                    entry.author = str(username)
                     entry.save()
 
             messages.success(request, (f"Updates successful!"))
 
-            return redirect('home')
-
+            return redirect("home")
 
         else:
 
@@ -1087,7 +1085,7 @@ def add_pics(request):
 
     total_loops = 0
 
-    current_user = str(request.user).lower()
+    current_user = str(request.user)
 
     entries = Picture.objects.all()
 
@@ -1098,7 +1096,7 @@ def add_pics(request):
         if form.is_valid():
 
             post = form.save(commit=False)
-            post.author = str(request.user).lower()
+            post.author = str(request.user)
             post.connected_user = User.objects.get(username=request.user)
 
             form.save()
@@ -1298,11 +1296,11 @@ def delete_friend(request,friend_id):
 
 def edit_pic(request,pic_id):
 
-    logged_in_user_id = str(request.user.username).lower()
+    logged_in_user_id = str(request.user.username)
 
     pic = Picture.objects.get(pk=pic_id)
 
-    pic_author = str(pic.author).lower()
+    pic_author = str(pic.author)
 
     if pic_author == logged_in_user_id:
         display = True
@@ -1314,8 +1312,8 @@ def edit_pic(request,pic_id):
     if form.is_valid():
         post = form.save(commit=False)
         #OVER HERE!#
-        post.author = str(request.user).lower()
-        post.connected_user = User.objects.get(username=str(request.user).lower())
+        post.author = str(request.user)
+        post.connected_user = User.objects.get(username=str(request.user))
         form.save()
         messages.success(request, ('Image Updated!'))
         return redirect('add_pics')
@@ -1329,7 +1327,7 @@ def edit_pic(request,pic_id):
 
 def edit_song(request,song_id):
 
-    logged_in_user_id = str(request.user.username).lower()
+    logged_in_user_id = str(request.user.username)
 
     #if the song instance author is the same as the name of the logged in user all is good...
 
@@ -1337,7 +1335,7 @@ def edit_song(request,song_id):
 
     song = Song.objects.get(pk=song_id)
 
-    song_author = str(song.author).lower()
+    song_author = str(song.author)
 
     if song_author == logged_in_user_id:
         display = True
@@ -1351,8 +1349,8 @@ def edit_song(request,song_id):
     if form.is_valid():
         post = form.save(commit=False)
         #OVER HERE!#
-        post.author = str(request.user).lower()
-        post.connected_user = User.objects.get(username=str(request.user).lower())
+        post.author = str(request.user)
+        post.connected_user = User.objects.get(username=str(request.user))
         form.save()
         messages.success(request, ('Song Updated!'))
         return redirect('add_song')
@@ -1369,7 +1367,7 @@ def add_song(request):
 
     total_loops = 0
 
-    current_user = str(request.user).lower()
+    current_user = str(request.user)
 
     entries = Song.objects.all()
 
@@ -1380,7 +1378,7 @@ def add_song(request):
         if form.is_valid():
             post = form.save(commit=False)
             #OVER HERE!#
-            post.author = str(request.user).lower()
+            post.author = str(request.user)
             post.connected_user = User.objects.get(username=request.user)
             form.save()
             messages.success(request, ('Song added!'))
@@ -1671,7 +1669,7 @@ def getUsers(request):
 
     for profile in all_profiles:
 
-        member_username_list.append({'member_id':str(profile.id),'username':str(profile.member.username).lower(),'user_id':profile.member.id})
+        member_username_list.append({'member_id':str(profile.id),'username':str(profile.member.username),'user_id':profile.member.id})
 
         #member_username_list.append({'member_id':str(profile.id),'username':profile.member.username})
 
@@ -1695,7 +1693,7 @@ def getStatus(request):
 def getPictures(request):
     pictures = Picture.objects.all()
     logged_on_user_profile_id = request.user.profile.id
-    logged_user_name = str(request.user.username.lower())
+    logged_user_name = str(request.user.username)
     return JsonResponse({"pictures":list(pictures.values()),"current_user":logged_on_user_profile_id,"username":logged_user_name})
 
 def send_request(request,id,url_id_b):
@@ -1798,7 +1796,7 @@ def CreateMessage2(request):
 
         current_user = request.user
 
-        help_to_update = Help.objects.get(user_asking_help=str(current_user.username).lower())
+        help_to_update = Help.objects.get(user_asking_help=str(current_user.username))
 
         if message != '':
 
@@ -1851,11 +1849,11 @@ def put_like(request):
 
         id = request.POST['userid']
 
-        logged_in_user = str(request.user.username).lower()
+        logged_in_user = str(request.user.username)
 
         pic_we_need = Picture.objects.get(pk=id)
 
-        author_of_pic_we_need = str(pic_we_need.author).lower()
+        author_of_pic_we_need = str(pic_we_need.author)
 
         #########hearted stuff####################
 
@@ -1980,7 +1978,7 @@ def filter_friends(request):
 
             ############################################################################################################
 
-            #user_name = user_name.lower()
+            #user_name = user_name
 
             friend_query = friend_query.lower()
 
@@ -1992,7 +1990,7 @@ def filter_friends(request):
 
             #for profile in all_profiles:
 
-                #if str(profile.author).lower() == user_name:
+                #if str(profile.author) == user_name:
                     #user_friends.append(profile)
 
             filtered_friend_list = []
@@ -2131,11 +2129,11 @@ def remove_like(request):
 
         id = request.POST['userid']
 
-        logged_in_user = str(request.user.username).lower()
+        logged_in_user = str(request.user.username)
 
         pic_we_need = Picture.objects.get(pk=id)
 
-        author_of_pic_we_need = str(pic_we_need.author).lower()
+        author_of_pic_we_need = str(pic_we_need.author)
 
         ######### removing hearted stuff####################
 
