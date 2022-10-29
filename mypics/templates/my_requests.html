@@ -53,7 +53,7 @@
 
                       {%else%}
 
-                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100></a>
 
                       {%endif%}
 
@@ -124,7 +124,7 @@
 
                       {%else%}
 
-                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100></a>
 
                       {%endif%}
 
@@ -200,7 +200,7 @@
 
                       {%else%}
 
-                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+                     <a href ="{% url 'my_profile' entry.member.id%}"><img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100></a>
 
                       {%endif%}
 
@@ -324,7 +324,7 @@
 
                       {%else%}
 
-                      <img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100>
+                      <a href ="{% url 'my_profile' entry.member.id%}"><img src="{% static 'default_profile.png' %}" class="img-fluid rounded-start" width = 100></a>
 
                       {%endif%}
 
